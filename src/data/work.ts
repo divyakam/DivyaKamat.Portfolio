@@ -20,7 +20,7 @@ export const work: CardItem[] = [
   },
   {
     id: "project-02",
-    title: "Kinetic Wayfinding",
+    title: "Kine",
     description: "A motion-led signage system for transit spaces that adapts to crowd flow in real time.",
     category: "Experience Design",
     year: 2025,
