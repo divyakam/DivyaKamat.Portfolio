@@ -1,0 +1,461 @@
+/* ============================================================
+   Global Styles — §6 + §16 resets and utilities
+   ============================================================ */
+@import "tailwindcss";
+@import "./tokens.css";
+@import "./patterns.css";
+
+/* ---- Plugin registration ---- */
+@plugin "@tailwindcss/vite";
+
+/* ---- Tailwind v4 @theme tokens ---- */
+@theme {
+  --color-bg: #FFFFFF;
+  --color-surface: #FAFAFA;
+  --color-line: #EAEAEA;
+  --color-line-strong: #D6D6D6;
+  --color-ink: #000000;
+  --color-ink-2: #404040;
+  --color-ink-3: #767676;
+  --color-accent: #DE3260;
+  --color-accent-tint: #FCEFF2;
+
+  --font-display: 'Instrument Serif', serif;
+  --font-heading: 'Space Grotesk', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --font-hand: 'Gochi Hand', cursive;
+
+  --radius-card: 20px;
+  --radius-pill: 9999px;
+}
+
+/* ---- Base resets (§16) ---- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color-scheme: light;
+  -webkit-tap-highlight-color: transparent;
+  scrollbar-width: thin;
+}
+
+body {
+  margin: 0;
+  font-family: var(--ff-body);
+  font-size: var(--fs-body);
+  line-height: 1.5;
+  color: var(--ink);
+  background-color: var(--bg);
+}
+
+img,
+video {
+  max-width: 100%;
+  display: block;
+}
+
+/* ---- Global focus ring (§10) ---- */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* ---- Skip link ---- */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 16px;
+  z-index: 200;
+  padding: 8px 16px;
+  background: var(--ink);
+  color: #fff;
+  font-family: var(--ff-mono);
+  font-size: 0.8125rem;
+  border-radius: 9999px;
+  text-decoration: none;
+  transition: top 0.15s;
+}
+
+.skip-link:focus {
+  top: 16px;
+}
+
+/* ---- Scrollbar (right panel) ---- */
+.thin-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.thin-scrollbar::-webkit-scrollbar-thumb {
+  background: #D6D6D6;
+  border-radius: 9999px;
+}
+
+.thin-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* ---- Typography helpers ---- */
+h1,
+h2,
+h3,
+h4 {
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+  max-width: 62ch;
+}
+
+/* ---- Reduced motion ---- */
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ---- Screen reader only ---- */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* ---- Hide line breaks on mobile ---- */
+@media (max-width: 1023px) {
+  .hidden-mobile {
+    display: none !important;
+  }
+}
+
+/* ---- Card arrow badge reveal on hover ---- */
+@media (hover: hover) and (pointer: fine) {
+  .spotlight:hover .card-arrow-badge {
+    opacity: 1 !important;
+    transform: translate(0, 0) !important;
+  }
+}
+
+/* ---- App Shell Grid System (§7) ---- */
+.app-shell {
+  height: 100dvh;
+  display: grid;
+  grid-template-rows: 1fr 56px;
+  grid-template-columns: minmax(340px, 30%) 1fr;
+  background: var(--bg);
+  position: relative;
+}
+
+.app-nav-header {
+  position: absolute;
+  top: 24px;
+  right: 32px;
+  z-index: 50;
+}
+
+.app-main-panel {
+  position: relative;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background: var(--bg);
+}
+
+.app-main-panel main {
+  padding-top: 104px;
+  padding-bottom: 48px;
+  padding-left: clamp(16px, 3vw, 40px);
+  padding-right: clamp(16px, 3vw, 40px);
+  max-width: 1120px;
+  margin: 0 auto;
+}
+
+/* ---- Responsive app shell (< 1024px) ---- */
+@media (max-width: 1023px) {
+  .app-shell {
+    display: flex !important;
+    flex-direction: column !important;
+    height: auto !important;
+    min-height: 100dvh;
+  }
+
+  /* Navbar sticky at top of mobile screen */
+  .app-nav-header {
+    order: 1 !important;
+    position: sticky !important;
+    top: 12px !important;
+    right: auto !important;
+    left: 0 !important;
+    width: 100% !important;
+    display: flex !important;
+    justify-content: center !important;
+    z-index: 100 !important;
+    padding: 0 12px !important;
+    margin-top: 8px !important;
+    margin-bottom: 8px !important;
+    box-sizing: border-box !important;
+  }
+
+  .nav-bar-container {
+    height: 42px !important;
+    padding: 0 10px !important;
+    max-width: calc(100vw - 24px) !important;
+    box-sizing: border-box !important;
+    justify-content: space-between !important;
+  }
+
+  .nav-bar-link {
+    padding: 0 8px !important;
+    font-size: 11.5px !important;
+    letter-spacing: 0.04em !important;
+  }
+
+  .nav-bar-sparkle {
+    padding: 0 2px !important;
+  }
+
+  .nav-bar-sparkle svg {
+    width: 10px !important;
+    height: 10px !important;
+  }
+
+  .nav-active-underline {
+    left: 8px !important;
+    right: 8px !important;
+    bottom: -4px !important;
+  }
+
+  /* Hero section intro comes 2nd and is center aligned */
+  aside[aria-label="Introduction"] {
+    order: 2 !important;
+    border-right: none !important;
+    border-bottom: 1px solid var(--line) !important;
+    padding: 32px 20px !important;
+    height: auto !important;
+    text-align: center !important;
+    align-items: center !important;
+  }
+
+  aside[aria-label="Introduction"] > div {
+    align-items: center !important;
+    text-align: center !important;
+  }
+
+  aside[aria-label="Introduction"] p,
+  aside[aria-label="Introduction"] h1 {
+    text-align: center !important;
+  }
+
+  aside[aria-label="Introduction"] div[style*="display: flex"],
+  aside[aria-label="Introduction"] div[style*="display:flex"] {
+    justify-content: center !important;
+  }
+
+  /* Main content panel comes 3rd and is center aligned */
+  .app-main-panel {
+    order: 3 !important;
+    overflow-y: visible !important;
+  }
+
+  .app-main-panel main {
+    padding-top: 32px !important;
+    padding-bottom: 48px !important;
+    text-align: center !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+  }
+
+  .app-main-panel main > div {
+    width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+  }
+
+  .app-main-panel main h1,
+  .app-main-panel main h2,
+  .app-main-panel main h3,
+  .app-main-panel main h4,
+  .app-main-panel main p {
+    text-align: center !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  /* Flex containers in pages center aligned on mobile */
+  .app-main-panel main div[style*="display: flex"],
+  .app-main-panel main div[style*="display:flex"] {
+    justify-content: center !important;
+  }
+
+  /* Who am I section on mobile */
+  .who-am-i-grid {
+    grid-template-columns: 1fr !important;
+    gap: 24px !important;
+    text-align: center !important;
+  }
+
+  .who-am-i-grid h2,
+  .who-am-i-grid p {
+    text-align: center !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  .who-am-i-grid div[style*="display: flex"],
+  .who-am-i-grid div[style*="display:flex"] {
+    justify-content: center !important;
+  }
+
+  /* Footer comes 4th and is center aligned */
+  footer {
+    order: 4 !important;
+    flex-direction: column !important;
+    height: auto !important;
+    padding: 20px 20px !important;
+    gap: 12px !important;
+    text-align: center !important;
+    justify-content: center !important;
+  }
+
+  footer div {
+    justify-content: center !important;
+    flex-wrap: wrap !important;
+  }
+
+  /* Hide HeroLeft intro on non-home routes in mobile view */
+  .hide-on-mobile-non-home {
+    display: none !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .app-nav-header {
+    padding: 0 6px !important;
+  }
+
+  .nav-bar-container {
+    padding: 0 6px !important;
+    max-width: calc(100vw - 12px) !important;
+  }
+
+  .nav-bar-link {
+    padding: 0 4px !important;
+    font-size: 10.5px !important;
+    letter-spacing: 0.02em !important;
+  }
+
+  .nav-bar-sparkle {
+    padding: 0 1px !important;
+  }
+
+  .nav-bar-sparkle svg {
+    width: 8px !important;
+    height: 8px !important;
+  }
+
+  .nav-active-underline {
+    left: 4px !important;
+    right: 4px !important;
+    bottom: -3px !important;
+  }
+}
+
+/* ---- Responsive Wall Collage (< 768px vs >= 768px) ---- */
+@media (max-width: 767px) {
+  .wall-desktop-canvas {
+    display: none !important;
+  }
+  .wall-mobile-canvas {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    width: 100% !important;
+    padding: 24px 16px !important;
+    gap: 20px !important;
+    box-sizing: border-box !important;
+  }
+}
+
+@media (min-width: 768px) {
+  .wall-mobile-canvas {
+    display: none !important;
+  }
+  .wall-desktop-canvas {
+    display: block !important;
+  }
+}
+
+/* ---- Case Study 30/70 Split Detail View ---- */
+@media (min-width: 900px) {
+  .case-study-left-panel {
+    overflow: hidden !important;
+  }
+}
+
+@media (max-width: 899px) {
+  .case-study-split-container {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100vw !important;
+    height: 100dvh !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    background: var(--bg) !important;
+  }
+
+  .case-study-left-panel {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 100% !important;
+    height: auto !important;
+    flex-shrink: 0 !important;
+    border-right: none !important;
+    border-bottom: 1px solid var(--line) !important;
+    padding: 20px 16px !important;
+    overflow: visible !important;
+    background: var(--bg) !important;
+  }
+
+  .case-study-right-panel {
+    width: 100% !important;
+    height: auto !important;
+    flex: none !important;
+    overflow: visible !important;
+    background: var(--surface) !important;
+  }
+
+  .case-study-right-panel img {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    display: block !important;
+  }
+
+  .case-study-close-btn {
+    top: 14px !important;
+    right: 14px !important;
+  }
+
+  .case-study-back-btn {
+    display: none !important;
+  }
+}
