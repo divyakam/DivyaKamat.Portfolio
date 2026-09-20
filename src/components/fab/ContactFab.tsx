@@ -9,7 +9,6 @@ import { ContactPopover } from "./ContactPopover";
  * Shown only on Home (controlled by parent).
  */
 
-const soft = { type: "spring" as const, stiffness: 400, damping: 30 };
 const pop = { type: "spring" as const, stiffness: 600, damping: 18 };
 
 export function ContactFab() {

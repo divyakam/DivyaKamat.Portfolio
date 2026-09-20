@@ -50,7 +50,7 @@ function getExplodeKeyframes(id: string, triggerCount: number, baseRotate: numbe
 const explodeTransition = {
   duration: 1.25,
   times: [0, 0.42, 1],
-  ease: ["cubic-bezier(0.16, 1, 0.3, 1)", "cubic-bezier(0.34, 1.56, 0.64, 1)"], // snappy burst out, elastic spring back to organized!
+  ease: ["easeInOut", "easeOut"] as any,
 };
 
 export function Wall() {
