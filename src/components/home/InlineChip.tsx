@@ -2,8 +2,8 @@ import { m } from "motion/react";
 
 /**
  * InlineChip — §8.3
- * A small photo thumbnail embedded inline in the tagline text.
- * Height scales with the font size (em units).
+ * A photo thumbnail embedded inline in the tagline text.
+ * Height scales with font size (em units).
  */
 export function InlineChip({
   src,
@@ -20,17 +20,17 @@ export function InlineChip({
       alt={alt}
       style={{
         display: "inline-block",
-        height: "0.78em",
-        aspectRatio: "1.6 / 1",
+        height: "1.35em",
+        aspectRatio: "1.5 / 1",
         objectFit: "cover",
-        verticalAlign: "-0.06em",
-        margin: "0 0.14em",
-        borderRadius: 6,
-        boxShadow: "0 1px 4px rgba(0,0,0,0.08)",
+        verticalAlign: "-0.22em",
+        margin: "0 0.18em",
+        borderRadius: 10,
+        boxShadow: "0 4px 12px rgba(0,0,0,0.12)",
       }}
       whileHover={{
-        rotate: 3 * direction,
-        scale: 1.08,
+        rotate: 4 * direction,
+        scale: 1.12,
       }}
       whileTap={{ scale: 0.94 }}
       transition={{ type: "spring", stiffness: 500, damping: 20 }}
