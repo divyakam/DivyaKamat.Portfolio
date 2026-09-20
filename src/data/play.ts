@@ -1,6 +1,6 @@
 import type { CardItem } from "./types";
 import project01Cover from "@/assets/work/project-01.png";
-import kineticCover from "@/assets/work/kine_b.png";
+
 
 export const play: CardItem[] = [
   {
