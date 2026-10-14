@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { m, AnimatePresence } from "motion/react";
-import { X, Calendar, Clock, User, Layers, ArrowLeft } from "lucide-react";
+import { Calendar, Clock, User, ArrowLeft } from "lucide-react";
 import type { CardItem } from "@/data/types";
 
 interface CaseStudyModalProps {
@@ -23,7 +23,7 @@ export function CaseStudyModal({ isOpen, onClose, item }: CaseStudyModalProps) {
   const [mousePos, setMousePos] = useState<{ x: number; y: number } | null>(null);
   const [isHovered, setIsHovered] = useState(false);
 
-  // Lock body scroll when open & add ESC key handler
+  // Lock body scroll when open, handle ESC key & popstate browser back button
   useEffect(() => {
     if (!isOpen) return;
 
@@ -36,11 +36,17 @@ export function CaseStudyModal({ isOpen, onClose, item }: CaseStudyModalProps) {
       }
     };
 
+    const handlePopState = () => {
+      onClose();
+    };
+
     window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("popstate", handlePopState);
 
     return () => {
       document.body.style.overflow = originalOverflow;
       window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("popstate", handlePopState);
     };
   }, [isOpen, onClose]);
 
@@ -81,8 +87,8 @@ export function CaseStudyModal({ isOpen, onClose, item }: CaseStudyModalProps) {
           <div
             className="case-study-split-container"
             style={{
-              width: "100vw",
-              height: "100vh",
+              width: "100%",
+              height: "100%",
               display: "flex",
               overflow: "hidden",
               background: "var(--bg)",
@@ -93,7 +99,7 @@ export function CaseStudyModal({ isOpen, onClose, item }: CaseStudyModalProps) {
                 ============================================================ */}
             <aside
               ref={leftPanelRef}
-              className="case-study-left-panel"
+              className="case-study-left-panel dot-grid"
               onPointerMove={handlePointerMove}
               onPointerEnter={() => setIsHovered(true)}
               onPointerLeave={() => {
@@ -104,16 +110,15 @@ export function CaseStudyModal({ isOpen, onClose, item }: CaseStudyModalProps) {
                 position: "relative",
                 width: "30%",
                 minWidth: "320px",
-                maxWidth: "440px",
                 height: "100vh",
                 overflow: "hidden",
                 borderRight: "1px solid var(--line)",
-                padding: "32px 28px",
+                padding: "clamp(24px, 3.5vh, 36px) clamp(20px, 2.8vw, 36px)",
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "space-between",
                 gap: 16,
-                background: "var(--bg)",
+                backgroundColor: "#fcf9f5ff",
                 boxSizing: "border-box",
                 flexShrink: 0,
               }}
@@ -213,36 +218,39 @@ export function CaseStudyModal({ isOpen, onClose, item }: CaseStudyModalProps) {
                   )}
                 </div>
 
-                {/* Category Chip, Title & Description */}
-                <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                  <span
-                    style={{
-                      display: "inline-flex",
-                      alignItems: "center",
-                      alignSelf: "flex-start",
-                      height: 26,
-                      padding: "0 12px",
-                      background: "var(--accent-tint)",
-                      color: "var(--accent)",
-                      border: "1px solid rgba(222, 50, 96, 0.25)",
-                      borderRadius: 9999,
-                      fontFamily: "var(--ff-body)",
-                      fontSize: 12,
-                      fontWeight: 600,
-                      textTransform: "uppercase",
-                      letterSpacing: "0.04em",
-                    }}
-                  >
-                    {item.category}
-                  </span>
+                {/* 2 Category Tag Chips, Title & Description */}
+                <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                  <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+                    {(item.categories || [item.category]).map((cat, idx) => (
+                      <span
+                        key={idx}
+                        style={{
+                          display: "inline-flex",
+                          alignItems: "center",
+                          height: 26,
+                          padding: "0 12px",
+                          background: "var(--accent-tint)",
+                          color: "var(--accent)",
+                          border: "1px solid rgba(222, 50, 96, 0.25)",
+                          borderRadius: 9999,
+                          fontFamily: "var(--ff-body)",
+                          fontSize: 13,
+                          fontWeight: 500,
+                          letterSpacing: "0.01em",
+                        }}
+                      >
+                        {cat}
+                      </span>
+                    ))}
+                  </div>
 
                   <h2
                     style={{
-                      fontFamily: "var(--ff-heading)",
-                      fontSize: "var(--fs-h3, 24px)",
-                      fontWeight: 700,
-                      lineHeight: 1.18,
-                      letterSpacing: "-0.015em",
+                      fontFamily: "'Cravelo DEMO', sans-serif",
+                      fontSize: "clamp(1.5rem, 2vw, 2.1rem)",
+                      fontWeight: 400,
+                      lineHeight: 1.15,
+                      letterSpacing: "0.02em",
                       color: "var(--ink)",
                       margin: 0,
                     }}
@@ -281,12 +289,12 @@ export function CaseStudyModal({ isOpen, onClose, item }: CaseStudyModalProps) {
                 <div
                   style={{
                     fontFamily: "var(--ff-mono)",
-                    fontSize: 11,
+                    fontSize: 13,
                     fontWeight: 600,
                     textTransform: "uppercase",
-                    letterSpacing: "0.08em",
+                    letterSpacing: "0.06em",
                     color: "var(--ink-3)",
-                    marginBottom: 2,
+                    marginBottom: 4,
                   }}
                 >
                   Project Details
@@ -294,45 +302,34 @@ export function CaseStudyModal({ isOpen, onClose, item }: CaseStudyModalProps) {
 
                 {/* Duration */}
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: 8, color: "var(--ink-2)", fontSize: 13, fontFamily: "var(--ff-body)" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 8, color: "var(--ink-2)", fontSize: 13.5, fontFamily: "var(--ff-body)" }}>
                     <Clock size={15} strokeWidth={1.8} color="var(--ink-3)" />
                     <span>Duration</span>
                   </div>
-                  <span style={{ fontSize: 13, fontWeight: 600, color: "var(--ink)", fontFamily: "var(--ff-mono)" }}>
+                  <span style={{ fontSize: 14, fontWeight: 600, color: "var(--ink)", fontFamily: "'Epilogue', sans-serif" }}>
                     {duration}
                   </span>
                 </div>
 
                 {/* Year */}
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: 8, color: "var(--ink-2)", fontSize: 13, fontFamily: "var(--ff-body)" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 8, color: "var(--ink-2)", fontSize: 13.5, fontFamily: "var(--ff-body)" }}>
                     <Calendar size={15} strokeWidth={1.8} color="var(--ink-3)" />
                     <span>Year</span>
                   </div>
-                  <span style={{ fontSize: 13, fontWeight: 600, color: "var(--ink)", fontFamily: "var(--ff-mono)" }}>
+                  <span style={{ fontSize: 14, fontWeight: 600, color: "var(--ink)", fontFamily: "'Epilogue', sans-serif" }}>
                     {item.year}
                   </span>
                 </div>
 
                 {/* Project Type */}
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: 8, color: "var(--ink-2)", fontSize: 13, fontFamily: "var(--ff-body)" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 8, color: "var(--ink-2)", fontSize: 13.5, fontFamily: "var(--ff-body)" }}>
                     <User size={15} strokeWidth={1.8} color="var(--ink-3)" />
                     <span>Project Type</span>
                   </div>
-                  <span style={{ fontSize: 13, fontWeight: 600, color: "var(--ink)", fontFamily: "var(--ff-mono)" }}>
+                  <span style={{ fontSize: 14, fontWeight: 600, color: "var(--ink)", fontFamily: "'Epilogue', sans-serif" }}>
                     {projectType}
-                  </span>
-                </div>
-
-                {/* Discipline */}
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: 8, color: "var(--ink-2)", fontSize: 13, fontFamily: "var(--ff-body)" }}>
-                    <Layers size={15} strokeWidth={1.8} color="var(--ink-3)" />
-                    <span>Discipline</span>
-                  </div>
-                  <span style={{ fontSize: 13, fontWeight: 600, color: "var(--ink)", fontFamily: "var(--ff-mono)" }}>
-                    {item.category}
                   </span>
                 </div>
               </div>
@@ -352,51 +349,7 @@ export function CaseStudyModal({ isOpen, onClose, item }: CaseStudyModalProps) {
                 position: "relative",
               }}
             >
-              {/* Floating Close Circle Button at top-right */}
-              <div
-                className="case-study-close-btn"
-                style={{
-                  position: "fixed",
-                  top: 24,
-                  right: 28,
-                  zIndex: 100000,
-                }}
-              >
-                <button
-                  onClick={onClose}
-                  aria-label="Close case study"
-                  style={{
-                    display: "inline-flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    width: 44,
-                    height: 44,
-                    borderRadius: "50%",
-                    background: "rgba(255, 255, 255, 0.9)",
-                    backdropFilter: "blur(12px)",
-                    WebkitBackdropFilter: "blur(12px)",
-                    color: "var(--ink)",
-                    border: "1px solid var(--line)",
-                    cursor: "pointer",
-                    boxShadow: "0 6px 20px rgba(0, 0, 0, 0.12)",
-                    transition: "transform 150ms ease, background 150ms ease, border-color 150ms ease",
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.transform = "scale(1.1)";
-                    e.currentTarget.style.background = "#ffffff";
-                    e.currentTarget.style.borderColor = "var(--accent)";
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.transform = "scale(1)";
-                    e.currentTarget.style.background = "rgba(255, 255, 255, 0.9)";
-                    e.currentTarget.style.borderColor = "var(--line)";
-                  }}
-                >
-                  <X size={20} strokeWidth={2.2} />
-                </button>
-              </div>
-
-              {/* Case Study Image Container */}
+              {/* Case Study Content Media Container */}
               <div
                 style={{
                   width: "100%",
@@ -404,24 +357,69 @@ export function CaseStudyModal({ isOpen, onClose, item }: CaseStudyModalProps) {
                   display: "flex",
                   flexDirection: "column",
                   alignItems: "center",
+                  gap: 24,
+                  padding: 24,
+                  boxSizing: "border-box",
                 }}
               >
-                {caseStudySrc && (
-                  <m.img
-                    initial={{ opacity: 0, y: 16 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-                    src={caseStudySrc}
-                    alt={item.title || "Case Study"}
-                    style={{
-                      width: "100%",
-                      maxWidth: "100%",
-                      height: "auto",
-                      display: "block",
-                      objectFit: "contain",
-                    }}
-                  />
+                {item.caseStudyMedia && item.caseStudyMedia.length > 0 ? (
+                  item.caseStudyMedia.map((media, idx) => {
+                    if (media.type === "video") {
+                      return (
+                        <video
+                          key={media.src || idx}
+                          src={media.src}
+                          autoPlay
+                          muted
+                          loop
+                          playsInline
+                          controls
+                          style={{
+                            width: "100%",
+                            maxWidth: "100%",
+                            height: "auto",
+                            borderRadius: 20,
+                            display: "block",
+                          }}
+                        />
+                      );
+                    }
+                    return (
+                      <img
+                        key={media.src || idx}
+                        src={media.src}
+                        alt={`${item.title} media ${idx + 1}`}
+                        loading="lazy"
+                        style={{
+                          width: "100%",
+                          maxWidth: "100%",
+                          height: "auto",
+                          borderRadius: 20,
+                          display: "block",
+                        }}
+                      />
+                    );
+                  })
+                ) : (
+                  caseStudySrc && (
+                    <m.img
+                      initial={{ opacity: 0, y: 16 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                      src={caseStudySrc}
+                      alt={item.title || "Case Study"}
+                      loading="lazy"
+                      style={{
+                        width: "100%",
+                        maxWidth: "100%",
+                        height: "auto",
+                        borderRadius: 20,
+                        display: "block",
+                        objectFit: "contain",
+                      }}
+                    />
+                  )
                 )}
               </div>
             </main>

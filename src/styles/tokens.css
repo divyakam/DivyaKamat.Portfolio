@@ -2,19 +2,59 @@
    Design Tokens — §6 of portfolio-prd.md
    ============================================================ */
 
+@font-face {
+  font-family: 'Montecatini Pro';
+  src: url('/fonts/fonnts.com-Montecatini-Pro-Stretto-Sm-Bold.otf') format('opentype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Montecatini Pro';
+  src: url('/fonts/fonnts.com-Montecatini-Pro-e-Normal.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Montecatini Pro';
+  src: url('/fonts/fonnts.com-Montecatini-Pro-e-Normal.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Raftel DEMO';
+  src: url('/fonts/Raftel-DEMO.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Cravelo DEMO';
+  src: url('/fonts/Cravelo-DEMO.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   /* 6.1 Colour */
-  --bg: #FFFFFF;
-  --surface: #FAFAFA;
+  --bg: #FEFAF7;
+  --surface: #FFFFFF;
   --line: #EAEAEA;
   --line-strong: #D6D6D6;
   --ink: #000000;
   --ink-2: #404040;
   --ink-3: #767676;
-  --accent: #DE3260;
-  --accent-tint: #FCEFF2;
-  --accent-glow: rgba(222, 50, 96, 0.10);
-  --accent-edge: rgba(222, 50, 96, 0.90);
+  --accent: #FF2A7A;
+  --accent-tint: #FFEBF2;
+  --accent-glow: rgba(255, 42, 122, 0.12);
+  --accent-edge: #FF2A7A;
 
   /* 6.4 Radius */
   --r: 20px;
@@ -42,18 +82,22 @@
   --fs-body-lg: 1.125rem;
   --fs-body: 0.9375rem;
   --fs-meta: 0.8125rem;
-  --fs-mono-nav: 0.8125rem;
+  --fs-mono-nav: 0.9375rem;
   --fs-mono-pill: 0.8125rem;
   --fs-hand-sign: 1.5rem;
   --fs-hand-note: 1.0625rem;
 
-  /* Font families */
-  --ff-display: 'Instrument Serif', serif;
-  --ff-heading: 'Space Grotesk', sans-serif;
-  --ff-body: 'Inter', sans-serif;
-  --ff-mono: 'JetBrains Mono', monospace;
+  /* Font families — Exact Figma fonts */
+  --ff-raftel: 'Raftel DEMO', 'Abril Fatface', serif;
+  --ff-cravelo: 'Cravelo DEMO', sans-serif;
+  --ff-display: 'Raftel DEMO', serif;
+  --ff-heading: 'Raftel DEMO', serif;
+  --ff-body: 'Epilogue', sans-serif;
+  --ff-nav: 'Cravelo DEMO', sans-serif;
+  --ff-mono: 'Cravelo DEMO', monospace;
+  --ff-mono-base: 'JetBrains Mono', monospace;
   --ff-hand: 'Gochi Hand', cursive;
-  --ff-wall-serif: 'Newsreader', serif;
+  --ff-wall-serif: 'Raftel DEMO', serif;
 }
 
 ::selection {

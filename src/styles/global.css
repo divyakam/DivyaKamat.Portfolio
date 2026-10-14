@@ -46,6 +46,9 @@ html {
 }
 
 body {
+  font-variant-ligatures: common-ligatures contextual discretionary-ligatures;
+
+  font-feature-settings: "liga" 1, "clig" 1, "calt" 1, "dlig" 1;
   margin: 0;
   font-family: var(--ff-body);
   font-size: var(--fs-body);
@@ -151,16 +154,33 @@ p {
     opacity: 1 !important;
     transform: translate(0, 0) !important;
   }
+
+  /* Cover image zoom on hover */
+  .spotlight:hover .card-cover-img {
+    transform: scale(1.04) !important;
+  }
 }
 
 /* ---- App Shell Grid System (§7) ---- */
 .app-shell {
   height: 100dvh;
   display: grid;
-  grid-template-rows: 1fr 56px;
-  grid-template-columns: minmax(340px, 30%) 1fr;
+  grid-template-rows: 1fr 64px;
+  grid-template-columns: minmax(320px, 30%) 1fr;
   background: var(--bg);
   position: relative;
+}
+
+.app-shell.app-shell-full {
+  grid-template-columns: 1fr !important;
+}
+
+.app-shell.app-shell-full .app-main-panel main {
+  max-width: 1600px !important;
+  padding-top: clamp(68px, 7.5vh, 88px) !important;
+  padding-bottom: 20px !important;
+  padding-left: clamp(24px, 4vw, 56px) !important;
+  padding-right: clamp(24px, 4vw, 56px) !important;
 }
 
 .app-nav-header {
@@ -178,12 +198,30 @@ p {
 }
 
 .app-main-panel main {
-  padding-top: 104px;
-  padding-bottom: 48px;
-  padding-left: clamp(16px, 3vw, 40px);
-  padding-right: clamp(16px, 3vw, 40px);
-  max-width: 1120px;
+  background-color: #FEFAF7;
+  padding-top: clamp(68px, 9vh, 96px);
+  padding-bottom: clamp(16px, 2.5vh, 36px);
+  padding-left: clamp(16px, 2.5vw, 40px);
+  padding-right: clamp(16px, 2.5vw, 40px);
+  max-width: 1400px;
   margin: 0 auto;
+  box-sizing: border-box;
+}
+
+/* Nav flower spin animation on hover/click — exactly 2 spins (720deg) */
+@keyframes navFlowerSpin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(720deg);
+  }
+}
+
+.nav-flower-spinning {
+  transform-origin: center center;
+  animation: navFlowerSpin 0.85s cubic-bezier(0.22, 1, 0.36, 1) 1 forwards !important;
 }
 
 /* ---- Responsive app shell (< 1024px) ---- */
@@ -252,7 +290,7 @@ p {
     align-items: center !important;
   }
 
-  aside[aria-label="Introduction"] > div {
+  aside[aria-label="Introduction"]>div {
     align-items: center !important;
     text-align: center !important;
   }
@@ -273,7 +311,7 @@ p {
     overflow-y: visible !important;
   }
 
-  .app-main-panel main {
+  .app-shell:not(.app-shell-full) .app-main-panel main {
     padding-top: 32px !important;
     padding-bottom: 48px !important;
     text-align: center !important;
@@ -282,7 +320,7 @@ p {
     align-items: center !important;
   }
 
-  .app-main-panel main > div {
+  .app-shell:not(.app-shell-full) .app-main-panel main>div {
     width: 100% !important;
     display: flex !important;
     flex-direction: column !important;
@@ -290,20 +328,36 @@ p {
     text-align: center !important;
   }
 
-  .app-main-panel main h1,
-  .app-main-panel main h2,
-  .app-main-panel main h3,
-  .app-main-panel main h4,
-  .app-main-panel main p {
+  .app-shell:not(.app-shell-full) .app-main-panel main h1,
+  .app-shell:not(.app-shell-full) .app-main-panel main h2,
+  .app-shell:not(.app-shell-full) .app-main-panel main h3,
+  .app-shell:not(.app-shell-full) .app-main-panel main h4,
+  .app-shell:not(.app-shell-full) .app-main-panel main p {
     text-align: center !important;
     margin-left: auto !important;
     margin-right: auto !important;
   }
 
   /* Flex containers in pages center aligned on mobile */
-  .app-main-panel main div[style*="display: flex"],
-  .app-main-panel main div[style*="display:flex"] {
+  .app-shell:not(.app-shell-full) .app-main-panel main div[style*="display: flex"],
+  .app-shell:not(.app-shell-full) .app-main-panel main div[style*="display:flex"] {
     justify-content: center !important;
+  }
+
+  /* Landing page grid on mobile */
+  .home-landing-grid {
+    grid-template-columns: 1fr !important;
+    justify-items: center !important;
+    text-align: center !important;
+    gap: 40px !important;
+  }
+
+  .home-landing-grid>div {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+    padding-left: 0 !important;
   }
 
   /* Who am I section on mobile */
@@ -384,6 +438,7 @@ p {
   .wall-desktop-canvas {
     display: none !important;
   }
+
   .wall-mobile-canvas {
     display: flex !important;
     flex-direction: column !important;
@@ -399,6 +454,7 @@ p {
   .wall-mobile-canvas {
     display: none !important;
   }
+
   .wall-desktop-canvas {
     display: block !important;
   }

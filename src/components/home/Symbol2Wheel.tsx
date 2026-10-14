@@ -1,0 +1,131 @@
+import { useState, useEffect, useRef } from "react";
+import { m, useAnimation, AnimatePresence } from "motion/react";
+
+/**
+ * Symbol2Wheel — Figma symbol2 rotating element.
+ * - Rotates 90° every ~2.8 seconds
+ * - Each quadrant turns pink (#FF2A7A) as it becomes "active"
+ * - Text cycles: Design → Art → Technology → Research (in blue #380FCA)
+ * - Layout: text above, [symbol] overlapping bottom-left of the text
+ */
+
+const WORDS = ["Design", "Art", "Technology", "Research"];
+const INTERVAL_MS = 2800;
+
+// Which SVG path indices are pink at each rotation step (0-indexed paths)
+// Original: path[1] = pink (right/east arm)
+// Step 0 = right pink, Step 1 = top pink, Step 2 = bottom pink, Step 3 = left pink
+const PINK_PATHS_BY_STEP: Record<number, number[]> = {
+  0: [1],
+  1: [0],
+  2: [2],
+  3: [4],
+};
+
+function Symbol2SVG({ activePaths }: { activePaths: number[] }) {
+  const c = (i: number) => activePaths.includes(i) ? "#FF2A7A" : "#98858C";
+
+  return (
+    <svg
+      width="160"
+      height="160"
+      viewBox="0 0 284 284"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+    >
+      <g clipPath="url(#clip0_s2w)">
+        <path d="M175.214 54.7177C185.545 65.66 166.996 93.2364 159.181 103.827C152.115 114.489 143.43 124.694 133.384 128.571C120.827 133.418 102.961 122.639 92.5139 113.326C82.0665 104.013 76.4324 99.6952 75.5789 92.8109C74.7253 85.9267 80.6845 78.9379 90.35 80.6178C101.568 82.5674 108.144 92.145 114.026 101.778C119.908 111.41 121.191 113.8 127.326 112.875C132.534 112.09 134.927 104.532 136.105 100.109C137.284 95.6867 145.32 66.9767 148.96 60.5221C150.983 56.9362 164.232 43.0859 175.214 54.7177Z" fill={c(0)} style={{ transition: "fill 500ms ease" }}/>
+        <path d="M274.49 123.165C279.904 142.428 249.569 146.65 229.681 149.116C209.028 151.676 184.239 150.062 168.94 144.065C153.64 138.067 157.425 127.847 159.032 121.198C161.533 110.855 181.944 87.1071 191.042 78.9067C200.14 70.7063 213.27 59.868 223.789 68.4321C234.308 76.9962 224.59 92.0788 217.251 97.2853C199.413 109.941 180.864 114.215 176.259 122.845C171.655 131.475 179.823 133.011 182.07 133.226C193.33 134.303 205.458 128.407 214.602 124.999C232.308 116.361 269.075 103.903 274.49 123.165Z" fill={c(1)} style={{ transition: "fill 500ms ease" }}/>
+        <path d="M240.012 183.361C232.632 173.585 208.737 165.254 195.364 160.196C177.907 153.037 151.602 151.477 141.826 158.857C132.05 166.237 130.8 171.408 132.006 190.42C133.212 209.431 145.509 231.015 154.244 242.432C162.979 253.849 169.257 251.426 174.787 248.931C180.442 246.379 180.961 239.695 179.749 236.556C178.537 233.417 172.479 217.721 165.171 207.196C159.325 198.776 154.372 185.755 153.518 178.871C153.804 175.875 154.437 174.054 157.907 172.488C161.378 170.922 167.829 170.678 177.701 178.915C191.001 190.013 190.93 190.762 210.294 201.684C229.657 212.605 235.831 203.369 237.401 202.763C238.971 202.158 245.545 190.691 240.012 183.361Z" fill={c(2)} style={{ transition: "fill 500ms ease" }}/>
+        <path d="M146.359 150.976C154.549 147.526 155.815 139.031 152.356 135.677C149.647 132.394 144.619 129.646 136.627 134.173C128.636 138.7 128.884 144.015 130.095 147.154C131.307 150.293 136.12 155.288 146.359 150.976Z" fill={c(3)} style={{ transition: "fill 500ms ease" }}/>
+        <path d="M125.239 166.341C131.152 148.766 115.682 139.804 110.59 137.73C96.0392 131.803 70.5157 127.989 64.5093 129.545C55.9838 131.753 51.1244 143.052 61.7553 150.446C73.0949 158.332 88.5967 154.308 92.3929 154.131C97.7076 153.883 103.592 153.412 105.517 159.164C107.869 166.192 91.5995 178.242 84.0708 185.837C73.4763 196.524 78.464 204.953 84.1696 208.522C89.8752 212.09 96.8311 210.488 104.217 204.391C111.204 198.623 117.848 188.31 125.239 166.341Z" fill={c(4)} style={{ transition: "fill 500ms ease" }}/>
+      </g>
+      <defs>
+        <clipPath id="clip0_s2w">
+          <rect width="260" height="260" fill="white" transform="translate(259.218 284) scale(1.00154) rotate(-174.539)"/>
+        </clipPath>
+      </defs>
+    </svg>
+  );
+}
+
+export function Symbol2Wheel() {
+  const [step, setStep] = useState(0);
+  const controls = useAnimation();
+  const totalRotation = useRef(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      totalRotation.current += 90;
+      controls.start({
+        rotate: totalRotation.current,
+        transition: { duration: 0.75, ease: [0.22, 1, 0.36, 1] },
+      });
+      setStep((prev) => (prev + 1) % 4);
+    }, INTERVAL_MS);
+    return () => clearInterval(timer);
+  }, [controls]);
+
+  const currentWord = WORDS[step];
+  const activePaths = PINK_PATHS_BY_STEP[step] ?? [1];
+
+  return (
+    <div style={{ userSelect: "none" }}>
+      {/* "Designing at the intersection of" label */}
+      <p
+        style={{
+          fontFamily: "'Epilogue', sans-serif",
+          fontSize: "clamp(0.85rem, 1.3vw, 1.05rem)",
+          fontWeight: 400,
+          lineHeight: 1.4,
+          color: "var(--ink)",
+          margin: "0 0 4px 0",
+        }}
+      >
+        Designing at the intersection of
+      </p>
+
+      {/* Cycling word + overlapping rotating symbol */}
+      <div style={{ position: "relative", display: "inline-flex", alignItems: "flex-end", gap: 0 }}>
+        {/* The big blue cycling word */}
+        <div style={{ position: "relative" }}>
+          <AnimatePresence mode="wait">
+            <m.span
+              key={currentWord}
+              initial={{ opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -18 }}
+              transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+              style={{
+                display: "block",
+                fontFamily: "'Abril Fatface', 'Instrument Serif', serif",
+                fontSize: "clamp(2.2rem, 3.8vw, 3.8rem)",
+                fontWeight: 400,
+                lineHeight: 1.1,
+                color: "#380FCA",
+                whiteSpace: "nowrap",
+              }}
+            >
+              {currentWord}
+            </m.span>
+          </AnimatePresence>
+        </div>
+
+        {/* Rotating Symbol2 — overlaps slightly to the bottom-right of the word */}
+        <m.div
+          animate={controls}
+          style={{
+            display: "inline-flex",
+            transformOrigin: "center center",
+            flexShrink: 0,
+            marginLeft: -24,
+            marginBottom: -12,
+          }}
+        >
+          <Symbol2SVG activePaths={activePaths} />
+        </m.div>
+      </div>
+    </div>
+  );
+}

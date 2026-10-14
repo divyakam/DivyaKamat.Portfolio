@@ -14,6 +14,9 @@ import "@fontsource/jetbrains-mono/500.css";
 import "@fontsource/jetbrains-mono/600.css";
 import "@fontsource/gochi-hand/400.css";
 import "@fontsource/newsreader/600.css";
+import "@fontsource/epilogue/400.css";
+import "@fontsource/epilogue/500.css";
+import "@fontsource/epilogue/600.css";
 
 // Global styles
 import "@/styles/global.css";

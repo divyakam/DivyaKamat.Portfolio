@@ -1,10 +1,10 @@
 // Site configuration — §12.3
 export const site = {
   name: "Divya",
-  email: "hello@example.com", // TODO: Owner supplies
-  linkedin: "https://www.linkedin.com/in/", // TODO: Owner supplies
-  instagram: "https://www.instagram.com/", // TODO: Owner supplies
-  resumePdf: "/assets/resume.pdf",
+  email: "divyakamat44@gmail.com",
+  linkedin: "https://www.linkedin.com/in/divya-kamat-",
+  behance: "https://www.behance.net/divya_kamat",
+  resumeUrl: "https://drive.google.com/file/d/1ip4NWeHBB-CW1imO-7-IGwq3CabeO389/view?usp=sharing",
   spotifyTrackId: "6BbhGaNa0m7mHOVIMcMbMf", // PLACEHOLDER: "I Want It That Way"
   roles: [
     { label: "Product Designer", icon: "PenTool" as const },
@@ -12,7 +12,7 @@ export const site = {
     { label: "Experience Designer", icon: "Sparkles" as const },
   ],
   fabRoutes: ["/"],
-  footerCopy: "Designed and built with curiosity. © 2026 Divya.",
+  footerCopy: "©2026 Divya Kamat",
   heroGreeting: "Hi",
   heroH1: "I'm Divya, and I love crafting fun things with passionate people!",
   tagline: "Combining design and tech to enhance human experiences.",

@@ -21,19 +21,19 @@ function ToolTile({ tool }: { tool: SkillTool }) {
         alignItems: "center",
         gap: 12,
         height: 56,
-        padding: "0 16px",
-        background: "#fff",
-        border: "var(--border)",
-        borderRadius: 20,
+        padding: "0 18px",
+        background: "#ffffff",
+        border: "1px solid rgba(0, 0, 0, 0.08)",
+        borderRadius: 16,
         cursor: "default",
-        transition: "border-color 160ms, transform 160ms, box-shadow 160ms",
+        boxShadow: "0 2px 8px rgba(0, 0, 0, 0.02)",
       }}
       whileHover={{
-        borderColor: "var(--accent)",
-        y: -2,
-        boxShadow: "0 4px 16px rgba(0, 0, 0, 0.06)",
+        borderColor: "#1D17CB",
+        y: -3,
+        boxShadow: "0 6px 20px rgba(29, 23, 203, 0.08)",
       }}
-      whileTap={{ scale: 0.96 }}
+      whileTap={{ scale: 0.97 }}
     >
       {/* Icon Container */}
       <div
@@ -41,8 +41,8 @@ function ToolTile({ tool }: { tool: SkillTool }) {
           width: 34,
           height: 34,
           borderRadius: 10,
-          background: tool.badgeBg || "var(--surface)",
-          border: tool.badgeBg ? "1px solid rgba(0,0,0,0.8)" : "1px solid var(--line)",
+          background: tool.badgeBg || "#F5F3EF",
+          border: tool.badgeBg ? "1px solid rgba(0,0,0,0.8)" : "1px solid rgba(0,0,0,0.06)",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
@@ -71,7 +71,7 @@ function ToolTile({ tool }: { tool: SkillTool }) {
               fontFamily: "var(--ff-mono)",
               fontSize: 13,
               fontWeight: 700,
-              color: tool.badgeBg ? "#fff" : "var(--ink)",
+              color: tool.badgeBg ? "#fff" : "#1E1E1E",
             }}
           >
             {tool.name[0]}
@@ -81,10 +81,10 @@ function ToolTile({ tool }: { tool: SkillTool }) {
 
       <span
         style={{
-          fontFamily: "var(--ff-body)",
-          fontSize: 15,
+          fontFamily: "'Epilogue', sans-serif",
+          fontSize: "0.95rem",
           fontWeight: 500,
-          color: "var(--ink)",
+          color: "#1E1E1E",
         }}
       >
         {tool.name}
@@ -99,24 +99,25 @@ function MethodChip({ name }: { name: string }) {
       style={{
         display: "inline-flex",
         alignItems: "center",
-        height: 40,
-        padding: "0 16px",
-        background: "#fff",
-        border: "1px solid var(--line-strong)",
+        height: 38,
+        padding: "0 18px",
+        background: "#ffffff",
+        border: "1px solid rgba(30, 30, 30, 0.7)",
         borderRadius: 9999,
-        fontFamily: "var(--ff-body)",
-        fontSize: 14,
-        fontWeight: 500,
-        color: "var(--ink)",
+        fontFamily: "'Epilogue', sans-serif",
+        fontSize: "0.92rem",
+        fontWeight: 400,
+        color: "#1E1E1E",
         cursor: "default",
-        transition: "border-color 160ms, background 160ms, transform 160ms",
+        transition: "border-color 160ms, color 160ms, transform 160ms, box-shadow 160ms",
       }}
       whileHover={{
-        borderColor: "var(--ink)",
-        background: "var(--surface)",
+        borderColor: "#FF2A7A",
+        color: "#FF2A7A",
         y: -2,
+        boxShadow: "0 4px 12px rgba(255, 42, 122, 0.12)",
       }}
-      whileTap={{ scale: 0.96 }}
+      whileTap={{ scale: 0.97 }}
     >
       {name}
     </m.span>
@@ -125,41 +126,41 @@ function MethodChip({ name }: { name: string }) {
 
 export function Skills() {
   return (
-    <section>
+    <section aria-labelledby="skills-heading">
       <h2
+        id="skills-heading"
         style={{
-          fontFamily: "var(--ff-display)",
-          fontSize: "var(--fs-view-title)",
+          fontFamily: "'Cravelo DEMO', sans-serif",
+          fontSize: "clamp(2rem, 3.2vw, 3.4rem)",
           fontWeight: 400,
-          lineHeight: 1.05,
-          letterSpacing: "-0.01em",
-          color: "var(--ink)",
-          margin: 0,
+          textTransform: "uppercase",
+          letterSpacing: "0.04em",
+          color: "#1E1E1E",
+          margin: "0 0 28px 0",
         }}
       >
-        Skills
+        Skills & Toolkit
       </h2>
 
       {/* Design tools */}
-      <div style={{ marginTop: 32 }}>
+      <div style={{ marginTop: 24 }}>
         <h3
           style={{
-            fontFamily: "var(--ff-heading)",
-            fontSize: "var(--fs-h3)",
+            fontFamily: "'Epilogue', sans-serif",
+            fontSize: "clamp(1.05rem, 1.3vw, 1.25rem)",
             fontWeight: 600,
             lineHeight: 1.2,
-            letterSpacing: "-0.01em",
-            color: "var(--ink)",
+            color: "#1E1E1E",
             margin: "0 0 16px 0",
           }}
         >
-          Design tools
+          Design Tools
         </h3>
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))",
-            gap: 12,
+            gridTemplateColumns: "repeat(auto-fill, minmax(185px, 1fr))",
+            gap: 14,
           }}
         >
           {designTools.map((tool) => (
@@ -169,25 +170,24 @@ export function Skills() {
       </div>
 
       {/* Spatial and interactive */}
-      <div style={{ marginTop: 40 }}>
+      <div style={{ marginTop: 36 }}>
         <h3
           style={{
-            fontFamily: "var(--ff-heading)",
-            fontSize: "var(--fs-h3)",
+            fontFamily: "'Epilogue', sans-serif",
+            fontSize: "clamp(1.05rem, 1.3vw, 1.25rem)",
             fontWeight: 600,
             lineHeight: 1.2,
-            letterSpacing: "-0.01em",
-            color: "var(--ink)",
+            color: "#1E1E1E",
             margin: "0 0 16px 0",
           }}
         >
-          Spatial and interactive
+          Spatial & Interactive
         </h3>
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))",
-            gap: 12,
+            gridTemplateColumns: "repeat(auto-fill, minmax(185px, 1fr))",
+            gap: 14,
           }}
         >
           {spatialTools.map((tool) => (
@@ -197,25 +197,24 @@ export function Skills() {
       </div>
 
       {/* Research and strategy */}
-      <div style={{ marginTop: 40 }}>
+      <div style={{ marginTop: 36, marginBottom: 24 }}>
         <h3
           style={{
-            fontFamily: "var(--ff-heading)",
-            fontSize: "var(--fs-h3)",
+            fontFamily: "'Epilogue', sans-serif",
+            fontSize: "clamp(1.05rem, 1.3vw, 1.25rem)",
             fontWeight: 600,
             lineHeight: 1.2,
-            letterSpacing: "-0.01em",
-            color: "var(--ink)",
+            color: "#1E1E1E",
             margin: "0 0 16px 0",
           }}
         >
-          Research and strategy
+          Research & Strategy
         </h3>
         <div
           style={{
             display: "flex",
             flexWrap: "wrap",
-            gap: 12,
+            gap: 10,
           }}
         >
           {researchMethods.map((method) => (

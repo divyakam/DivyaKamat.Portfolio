@@ -36,7 +36,7 @@ export function ResumeView() {
 
         {/* Download button */}
         <m.a
-          href={site.resumePdf}
+          href={site.resumeUrl}
           download
           whileTap={{ scale: 0.96 }}
           style={{
@@ -73,7 +73,7 @@ export function ResumeView() {
 
         {/* Open in new tab */}
         <a
-          href={site.resumePdf}
+          href={site.resumeUrl}
           target="_blank"
           rel="noopener noreferrer"
           style={{
@@ -105,7 +105,7 @@ export function ResumeView() {
         }}
       >
         <object
-          data={`${site.resumePdf}#toolbar=0&view=FitH`}
+          data={`${site.resumeUrl}#toolbar=0&view=FitH`}
           type="application/pdf"
           width="100%"
           height="100%"

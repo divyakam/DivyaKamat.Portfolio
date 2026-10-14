@@ -1,21 +1,70 @@
-import { m } from "motion/react";
+import { useEffect, useRef, useState } from "react";
 import { ProjectCard } from "./ProjectCard";
 import type { CardItem } from "@/data/types";
 
-// Random initial offsets for projects coming into view
-const randomPresets = [
-  { x: -90, y: 70, rotate: -12, scale: 0.82 },
-  { x: 90, y: 90, rotate: 10, scale: 0.8 },
-  { x: -70, y: 110, rotate: 14, scale: 0.84 },
-  { x: 80, y: 60, rotate: -9, scale: 0.83 },
-  { x: -100, y: 80, rotate: -8, scale: 0.81 },
-  { x: 100, y: 100, rotate: 12, scale: 0.85 },
-];
+/**
+ * FadeInCardWrapper — Scroll-triggered reveal wrapper with staggered delay
+ * - Uses IntersectionObserver (threshold: 0.12)
+ * - Animates once: opacity 0→1, translateY 24px→0, scale 0.97→1
+ * - 600ms duration with cubic-bezier(0.22, 1, 0.36, 1) easing
+ * - Stagger applied via delay prop
+ * - Respects prefers-reduced-motion (instant display)
+ */
+function FadeInCardWrapper({
+  children,
+  delay = 0,
+}: {
+  children: React.ReactNode;
+  delay?: number;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const node = ref.current;
+    if (!node) return;
+
+    // Check prefers-reduced-motion
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setIsVisible(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.unobserve(node);
+        }
+      },
+      { threshold: 0.12 }
+    );
+
+    observer.observe(node);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
+  return (
+    <div
+      ref={ref}
+      style={{
+        opacity: isVisible ? 1 : 0,
+        transform: isVisible ? "translateY(0) scale(1)" : "translateY(24px) scale(0.97)",
+        transition: `opacity 600ms cubic-bezier(0.22, 1, 0.36, 1) ${delay}ms, transform 600ms cubic-bezier(0.22, 1, 0.36, 1) ${delay}ms`,
+        willChange: "opacity, transform",
+      }}
+    >
+      {children}
+    </div>
+  );
+}
 
 /**
  * CardGrid — §8.7
- * Responsive auto-fill grid for Work and Play cards.
- * Includes a scroll effect where cards fly in from random offset positions and angles into place.
+ * Responsive auto-fill grid for Work/Play cards with staggered scroll-reveal.
  */
 export function CardGrid({ items }: { items: CardItem[] }) {
   return (
@@ -27,38 +76,11 @@ export function CardGrid({ items }: { items: CardItem[] }) {
         overflow: "visible",
       }}
     >
-      {items.map((item, index) => {
-        const preset = randomPresets[index % randomPresets.length];
-
-        return (
-          <m.div
-            key={item.id}
-            initial={{
-              opacity: 0,
-              x: preset.x,
-              y: preset.y,
-              rotate: preset.rotate,
-              scale: preset.scale,
-            }}
-            whileInView={{
-              opacity: 1,
-              x: 0,
-              y: 0,
-              rotate: 0,
-              scale: 1,
-            }}
-            viewport={{ once: false, amount: 0.15 }}
-            transition={{
-              duration: 0.65,
-              ease: [0.22, 1, 0.36, 1],
-              delay: (index % 2) * 0.1,
-            }}
-            style={{ willChange: "transform, opacity" }}
-          >
-            <ProjectCard item={item} />
-          </m.div>
-        );
-      })}
+      {items.map((item, index) => (
+        <FadeInCardWrapper key={item.id} delay={Math.min(index * 80, 320)}>
+          <ProjectCard item={item} />
+        </FadeInCardWrapper>
+      ))}
     </div>
   );
 }

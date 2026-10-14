@@ -6,23 +6,21 @@ import { work } from "@/data/work";
  * "Work" title + project cards grid.
  */
 export function WorkView() {
-  const sorted = [...work].sort((a, b) => {
-    if (b.year !== a.year) return b.year - a.year;
-    return (a.order ?? 0) - (b.order ?? 0);
-  });
+  const sorted = [...work].sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
 
   return (
     <div>
       <h2
         tabIndex={-1}
         style={{
-          fontFamily: "var(--ff-display)",
-          fontSize: "var(--fs-view-title)",
+          fontFamily: "'Cravelo DEMO', sans-serif",
+          fontSize: "clamp(2.4rem, 3.8vw, 4.2rem)",
           fontWeight: 400,
+          textTransform: "uppercase",
+          letterSpacing: "0.04em",
+          color: "#1E1E1E",
           lineHeight: 1.05,
-          letterSpacing: "-0.01em",
-          color: "var(--ink)",
-          margin: 0,
+          margin: "clamp(18px, 3vh, 36px) 0 8px 0",
         }}
       >
         Work

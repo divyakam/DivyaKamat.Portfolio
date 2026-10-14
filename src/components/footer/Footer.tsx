@@ -1,110 +1,128 @@
 import { m } from "motion/react";
-import { ArrowUpRight } from "lucide-react";
 import { site } from "@/data/site.config";
 
+import linkedinIconUrl from "@/assets/logo/linkedin-app-icon.svg";
+import behanceIconUrl from "@/assets/logo/behance-icon.svg";
+
 /**
- * Footer — §8.5
- * Full-width bottom bar: copy on the left, social links on the right.
+ * Footer — Exact Figma footer design (#119:283)
+ * 2. in the footer, the "divyakamat44@gmail.com" should link to the email on click.
+ * 3. replace the png logos of linkedin and behance to the svg I have put in the "logo" folder in "assets".
  */
 export function Footer() {
-  const links = [
-    { label: "EMAIL", href: `mailto:${site.email}` },
-    { label: "LINKEDIN", href: site.linkedin, external: true },
-    { label: "INSTAGRAM", href: site.instagram, external: true },
-  ];
-
   return (
     <footer
       style={{
         gridColumn: "1 / -1",
-        height: 56,
-        padding: "0 32px",
+        height: 64,
+        padding: "0 clamp(20px, 3vw, 40px)",
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
-        borderTop: "1px solid var(--line)",
-        background: "var(--bg)",
+        borderTop: "1px solid rgba(0,0,0,0.06)",
+        background: "#FEFAF7",
+        boxSizing: "border-box",
       }}
     >
-      {/* Left text */}
+      {/* Left copyright text */}
       <span
         style={{
-          fontFamily: "var(--ff-body)",
-          fontSize: 13,
+          fontFamily: "'Epilogue', sans-serif",
+          fontSize: "clamp(13px, 1.1vw, 15px)",
           fontWeight: 400,
-          color: "var(--ink-3)",
+          color: "#8B8B8B",
           whiteSpace: "nowrap",
-          overflow: "hidden",
-          textOverflow: "ellipsis",
+          userSelect: "none",
         }}
       >
         {site.footerCopy}
       </span>
 
-      {/* Right links */}
-      <div style={{ display: "flex", alignItems: "center", gap: 24 }}>
-        {links.map((link) => (
-          <m.a
-            key={link.label}
-            href={link.href}
-            target={link.external ? "_blank" : undefined}
-            rel={link.external ? "noopener noreferrer" : undefined}
-            whileTap={{ scale: 0.96 }}
+      {/* Right: email + social icons */}
+      <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
+        {/* Email link */}
+        <a
+          href={`mailto:${site.email}`}
+          aria-label="Send email to Divya"
+          style={{
+            fontFamily: "'Epilogue', sans-serif",
+            fontSize: "clamp(13px, 1.1vw, 15px)",
+            fontWeight: 400,
+            color: "#8B8B8B",
+            textDecoration: "none",
+            cursor: "pointer",
+            transition: "color 150ms",
+            whiteSpace: "nowrap",
+          }}
+          onMouseEnter={(e) => {
+            (e.currentTarget as HTMLElement).style.color = "#FF2A7A";
+          }}
+          onMouseLeave={(e) => {
+            (e.currentTarget as HTMLElement).style.color = "#8B8B8B";
+          }}
+        >
+          {site.email}
+        </a>
+
+        {/* LinkedIn icon — SVG from assets/logo folder */}
+        <m.a
+          href={site.linkedin}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="LinkedIn"
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.95 }}
+          transition={{ duration: 0.15 }}
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            justifyContent: "center",
+            width: 32,
+            height: 32,
+            cursor: "pointer",
+          }}
+        >
+          <img
+            src={linkedinIconUrl}
+            alt="LinkedIn"
             style={{
-              fontFamily: "var(--ff-mono)",
-              fontSize: 12,
-              fontWeight: 500,
-              letterSpacing: "0.06em",
-              textTransform: "uppercase",
-              color: "var(--ink)",
-              textDecoration: "none",
-              display: "inline-flex",
-              alignItems: "center",
-              gap: 2,
-              position: "relative",
+              width: 28,
+              height: 28,
+              display: "block",
+              objectFit: "contain",
             }}
-            onMouseEnter={(e) => {
-              const underline = e.currentTarget.querySelector<HTMLElement>("[data-underline]");
-              if (underline) underline.style.transform = "scaleX(1)";
-              const arrow = e.currentTarget.querySelector<HTMLElement>("[data-arrow]");
-              if (arrow) arrow.style.transform = "translate(2px, -2px)";
+          />
+        </m.a>
+
+        {/* Behance icon — SVG from assets/logo folder */}
+        <m.a
+          href={site.behance}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Behance"
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.95 }}
+          transition={{ duration: 0.15 }}
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            justifyContent: "center",
+            width: 32,
+            height: 32,
+            cursor: "pointer",
+          }}
+        >
+          <img
+            src={behanceIconUrl}
+            alt="Behance"
+            style={{
+              width: 32,
+              height: 32,
+              display: "block",
+              objectFit: "contain",
             }}
-            onMouseLeave={(e) => {
-              const underline = e.currentTarget.querySelector<HTMLElement>("[data-underline]");
-              if (underline) underline.style.transform = "scaleX(0)";
-              const arrow = e.currentTarget.querySelector<HTMLElement>("[data-arrow]");
-              if (arrow) arrow.style.transform = "translate(0, 0)";
-            }}
-          >
-            <span style={{ position: "relative" }}>
-              {link.label}
-              <span
-                data-underline
-                style={{
-                  position: "absolute",
-                  bottom: -2,
-                  left: 0,
-                  right: 0,
-                  height: 1.5,
-                  background: "var(--accent)",
-                  borderRadius: 2,
-                  transform: "scaleX(0)",
-                  transformOrigin: "left",
-                  transition: "transform 250ms cubic-bezier(0.22, 1, 0.36, 1)",
-                }}
-              />
-            </span>
-            <span
-              data-arrow
-              style={{
-                display: "inline-flex",
-                transition: "transform 200ms cubic-bezier(0.22, 1, 0.36, 1)",
-              }}
-            >
-              <ArrowUpRight size={12} strokeWidth={1.5} />
-            </span>
-          </m.a>
-        ))}
+          />
+        </m.a>
       </div>
     </footer>
   );

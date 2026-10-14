@@ -67,18 +67,19 @@ export function ProjectCard({ item }: { item: CardItem }) {
                 background: "var(--surface)",
               }}
             >
-              {/* Cover Image */}
+              {/* Cover Image with hover scale */}
               {item.cover?.src && !imgError ? (
                 <img
                   src={item.cover.src}
                   alt={item.cover.alt || item.title}
                   onError={() => setImgError(true)}
+                  className="card-cover-img"
                   style={{
                     width: "100%",
                     height: "100%",
                     objectFit: "cover",
                     display: "block",
-                    transition: "transform 400ms cubic-bezier(0.22, 1, 0.36, 1)",
+                    transition: "transform 500ms cubic-bezier(0.22, 1, 0.36, 1)",
                   }}
                 />
               ) : (
@@ -183,14 +184,14 @@ export function ProjectCard({ item }: { item: CardItem }) {
                 </span>
               </div>
 
-              {/* Title */}
+              {/* Title — uses Cravelo DEMO (same as navbar) */}
               <h3
                 style={{
-                  fontFamily: "var(--ff-heading)",
+                  fontFamily: "'Cravelo DEMO', sans-serif",
                   fontSize: "var(--fs-h3)",
-                  fontWeight: 600,
+                  fontWeight: 400,
                   lineHeight: 1.2,
-                  letterSpacing: "-0.01em",
+                  letterSpacing: "0.02em",
                   color: "var(--ink)",
                   margin: 0,
                   overflow: "hidden",
