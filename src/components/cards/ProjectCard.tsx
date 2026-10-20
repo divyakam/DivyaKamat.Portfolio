@@ -28,21 +28,21 @@ export function ProjectCard({ item }: { item: CardItem }) {
   const CardWrapper = hasCaseStudy ? "div" : isClickable ? "a" : "div";
   const cardProps = isClickable && !hasCaseStudy
     ? {
-        href: item.href,
-        target: item.external ? "_blank" : undefined,
-        rel: item.external ? "noopener noreferrer" : undefined,
-      }
+      href: item.href,
+      target: item.external ? "_blank" : undefined,
+      rel: item.external ? "noopener noreferrer" : undefined,
+    }
     : {
-        role: isClickable ? "button" : undefined,
-        tabIndex: isClickable ? 0 : undefined,
-        onClick: handleClick,
-        onKeyDown: (e: React.KeyboardEvent) => {
-          if (hasCaseStudy && (e.key === "Enter" || e.key === " ")) {
-            e.preventDefault();
-            setIsModalOpen(true);
-          }
-        },
-      };
+      role: isClickable ? "button" : undefined,
+      tabIndex: isClickable ? 0 : undefined,
+      onClick: handleClick,
+      onKeyDown: (e: React.KeyboardEvent) => {
+        if (hasCaseStudy && (e.key === "Enter" || e.key === " ")) {
+          e.preventDefault();
+          setIsModalOpen(true);
+        }
+      },
+    };
 
   return (
     <>
@@ -151,9 +151,27 @@ export function ProjectCard({ item }: { item: CardItem }) {
             </div>
 
             {/* Body */}
-            <div style={{ padding: 20, display: "flex", flexDirection: "column", gap: 10 }}>
+            <div
+              className="project-card-body"
+              style={{
+                padding: 20,
+                display: "flex",
+                flexDirection: "column",
+                gap: 10,
+                textAlign: "left",
+                alignItems: "stretch",
+              }}
+            >
               {/* Meta row */}
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <div
+                className="project-card-meta"
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  width: "100%",
+                }}
+              >
                 <span
                   style={{
                     display: "inline-flex",
@@ -167,6 +185,7 @@ export function ProjectCard({ item }: { item: CardItem }) {
                     fontSize: 13,
                     fontWeight: 500,
                     color: "var(--ink)",
+                    flexShrink: 0,
                   }}
                 >
                   {item.category}
@@ -178,6 +197,7 @@ export function ProjectCard({ item }: { item: CardItem }) {
                     fontWeight: 500,
                     color: "var(--ink-3)",
                     fontVariantNumeric: "tabular-nums",
+                    flexShrink: 0,
                   }}
                 >
                   {item.year}
@@ -186,6 +206,7 @@ export function ProjectCard({ item }: { item: CardItem }) {
 
               {/* Title — uses Cravelo DEMO (same as navbar) */}
               <h3
+                className="project-card-title"
                 style={{
                   fontFamily: "'Cravelo DEMO', sans-serif",
                   fontSize: "var(--fs-h3)",
@@ -194,6 +215,7 @@ export function ProjectCard({ item }: { item: CardItem }) {
                   letterSpacing: "0.02em",
                   color: "var(--ink)",
                   margin: 0,
+                  textAlign: "left",
                   overflow: "hidden",
                   textOverflow: "ellipsis",
                   whiteSpace: "nowrap",
@@ -204,12 +226,14 @@ export function ProjectCard({ item }: { item: CardItem }) {
 
               {/* Description */}
               <p
+                className="project-card-description"
                 style={{
                   fontFamily: "var(--ff-body)",
                   fontSize: "var(--fs-body)",
                   lineHeight: 1.5,
                   color: "var(--ink-2)",
                   margin: 0,
+                  textAlign: "left",
                   display: "-webkit-box",
                   WebkitLineClamp: 2,
                   WebkitBoxOrient: "vertical",

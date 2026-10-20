@@ -3,12 +3,15 @@ import { m } from "motion/react";
 import { designTools, spatialTools, researchMethods, type SkillTool } from "@/data/skills";
 
 /**
- * Skills — §8.9.3
- * Three groups: Design tools (with Devicon & SimpleIcon logos),
- * Spatial & interactive tools (with high-contrast badge logos), and Research & strategy (chips).
+ * Skills & Toolkit
+ * Styled to match the NavBar aesthetic:
+ * - Capsule / pill shape: borderRadius 158, background #FEFEFE, border 1px solid #5D5D5D
+ * - Typography: Cravelo DEMO, uppercase, color #1E1E1E, letterSpacing 0.04em
+ * - Box shadow: 0 2px 10px rgba(0, 0, 0, 0.03)
+ * - Hover accents: Royal blue (#1D17CB) and pink (#FF2A7A)
  */
 
-function ToolTile({ tool }: { tool: SkillTool }) {
+function ToolPill({ tool }: { tool: SkillTool }) {
   const [imgError, setImgError] = useState(false);
   const iconUrl = tool.color
     ? `https://cdn.simpleicons.org/${tool.icon}/${tool.color}`
@@ -16,39 +19,37 @@ function ToolTile({ tool }: { tool: SkillTool }) {
 
   return (
     <m.div
+      className="nav-styled-pill"
       style={{
-        display: "flex",
+        display: "inline-flex",
         alignItems: "center",
-        gap: 12,
-        height: 56,
-        padding: "0 18px",
-        background: "#ffffff",
-        border: "1px solid rgba(0, 0, 0, 0.08)",
-        borderRadius: 16,
+        gap: 10,
+        height: 46,
+        padding: "0 20px 0 14px",
+        background: "#FEFEFE",
+        border: "1px solid #5D5D5D",
+        borderRadius: 158,
+        boxShadow: "0 2px 10px rgba(0, 0, 0, 0.03)",
         cursor: "default",
-        boxShadow: "0 2px 8px rgba(0, 0, 0, 0.02)",
+        userSelect: "none",
+        transition: "border-color 200ms ease, box-shadow 200ms ease, transform 200ms ease",
       }}
       whileHover={{
         borderColor: "#1D17CB",
-        y: -3,
-        boxShadow: "0 6px 20px rgba(29, 23, 203, 0.08)",
+        y: -2,
+        boxShadow: "0 4px 14px rgba(29, 23, 203, 0.12)",
       }}
       whileTap={{ scale: 0.97 }}
     >
       {/* Icon Container */}
       <div
         style={{
-          width: 34,
-          height: 34,
-          borderRadius: 10,
-          background: tool.badgeBg || "#F5F3EF",
-          border: tool.badgeBg ? "1px solid rgba(0,0,0,0.8)" : "1px solid rgba(0,0,0,0.06)",
+          width: 24,
+          height: 24,
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
           flexShrink: 0,
-          padding: 6,
-          boxSizing: "border-box",
         }}
       >
         {!imgError ? (
@@ -68,10 +69,10 @@ function ToolTile({ tool }: { tool: SkillTool }) {
         ) : (
           <span
             style={{
-              fontFamily: "var(--ff-mono)",
+              fontFamily: "'Cravelo DEMO', sans-serif",
               fontSize: 13,
-              fontWeight: 700,
-              color: tool.badgeBg ? "#fff" : "#1E1E1E",
+              fontWeight: 400,
+              color: "#1E1E1E",
             }}
           >
             {tool.name[0]}
@@ -81,10 +82,14 @@ function ToolTile({ tool }: { tool: SkillTool }) {
 
       <span
         style={{
-          fontFamily: "'Epilogue', sans-serif",
-          fontSize: "0.95rem",
-          fontWeight: 500,
+          fontFamily: "'Cravelo DEMO', sans-serif",
+          fontSize: "1.02rem",
+          fontWeight: 400,
+          letterSpacing: "0.04em",
+          textTransform: "uppercase",
           color: "#1E1E1E",
+          lineHeight: 1,
+          whiteSpace: "nowrap",
         }}
       >
         {tool.name}
@@ -93,29 +98,35 @@ function ToolTile({ tool }: { tool: SkillTool }) {
   );
 }
 
-function MethodChip({ name }: { name: string }) {
+function MethodPill({ name }: { name: string }) {
   return (
     <m.span
+      className="nav-styled-pill"
       style={{
         display: "inline-flex",
         alignItems: "center",
-        height: 38,
+        height: 42,
         padding: "0 18px",
-        background: "#ffffff",
-        border: "1px solid rgba(30, 30, 30, 0.7)",
-        borderRadius: 9999,
-        fontFamily: "'Epilogue', sans-serif",
-        fontSize: "0.92rem",
+        background: "#FEFEFE",
+        border: "1px solid #5D5D5D",
+        borderRadius: 158,
+        boxShadow: "0 2px 10px rgba(0, 0, 0, 0.03)",
+        fontFamily: "'Cravelo DEMO', sans-serif",
+        fontSize: "0.96rem",
         fontWeight: 400,
+        letterSpacing: "0.04em",
+        textTransform: "uppercase",
         color: "#1E1E1E",
         cursor: "default",
-        transition: "border-color 160ms, color 160ms, transform 160ms, box-shadow 160ms",
+        userSelect: "none",
+        whiteSpace: "nowrap",
+        transition: "border-color 200ms ease, box-shadow 200ms ease, color 200ms ease, transform 200ms ease",
       }}
       whileHover={{
         borderColor: "#FF2A7A",
         color: "#FF2A7A",
         y: -2,
-        boxShadow: "0 4px 12px rgba(255, 42, 122, 0.12)",
+        boxShadow: "0 4px 14px rgba(255, 42, 122, 0.12)",
       }}
       whileTap={{ scale: 0.97 }}
     >
@@ -129,6 +140,7 @@ export function Skills() {
     <section aria-labelledby="skills-heading">
       <h2
         id="skills-heading"
+        className="skills-heading"
         style={{
           fontFamily: "'Cravelo DEMO', sans-serif",
           fontSize: "clamp(2rem, 3.2vw, 3.4rem)",
@@ -137,6 +149,7 @@ export function Skills() {
           letterSpacing: "0.04em",
           color: "#1E1E1E",
           margin: "0 0 28px 0",
+          textAlign: "left",
         }}
       >
         Skills & Toolkit
@@ -145,26 +158,31 @@ export function Skills() {
       {/* Design tools */}
       <div style={{ marginTop: 24 }}>
         <h3
+          className="skills-subheading"
           style={{
-            fontFamily: "'Epilogue', sans-serif",
-            fontSize: "clamp(1.05rem, 1.3vw, 1.25rem)",
-            fontWeight: 600,
-            lineHeight: 1.2,
+            fontFamily: "'Cravelo DEMO', sans-serif",
+            fontSize: "clamp(1.1rem, 1.4vw, 1.35rem)",
+            fontWeight: 400,
+            textTransform: "uppercase",
+            letterSpacing: "0.04em",
             color: "#1E1E1E",
             margin: "0 0 16px 0",
+            textAlign: "left",
           }}
         >
           Design Tools
         </h3>
         <div
+          className="skills-pills-row"
           style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(185px, 1fr))",
-            gap: 14,
+            display: "flex",
+            flexWrap: "wrap",
+            gap: 12,
+            alignItems: "center",
           }}
         >
           {designTools.map((tool) => (
-            <ToolTile key={tool.name} tool={tool} />
+            <ToolPill key={tool.name} tool={tool} />
           ))}
         </div>
       </div>
@@ -172,26 +190,31 @@ export function Skills() {
       {/* Spatial and interactive */}
       <div style={{ marginTop: 36 }}>
         <h3
+          className="skills-subheading"
           style={{
-            fontFamily: "'Epilogue', sans-serif",
-            fontSize: "clamp(1.05rem, 1.3vw, 1.25rem)",
-            fontWeight: 600,
-            lineHeight: 1.2,
+            fontFamily: "'Cravelo DEMO', sans-serif",
+            fontSize: "clamp(1.1rem, 1.4vw, 1.35rem)",
+            fontWeight: 400,
+            textTransform: "uppercase",
+            letterSpacing: "0.04em",
             color: "#1E1E1E",
             margin: "0 0 16px 0",
+            textAlign: "left",
           }}
         >
           Spatial & Interactive
         </h3>
         <div
+          className="skills-pills-row"
           style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(185px, 1fr))",
-            gap: 14,
+            display: "flex",
+            flexWrap: "wrap",
+            gap: 12,
+            alignItems: "center",
           }}
         >
           {spatialTools.map((tool) => (
-            <ToolTile key={tool.name} tool={tool} />
+            <ToolPill key={tool.name} tool={tool} />
           ))}
         </div>
       </div>
@@ -199,26 +222,31 @@ export function Skills() {
       {/* Research and strategy */}
       <div style={{ marginTop: 36, marginBottom: 24 }}>
         <h3
+          className="skills-subheading"
           style={{
-            fontFamily: "'Epilogue', sans-serif",
-            fontSize: "clamp(1.05rem, 1.3vw, 1.25rem)",
-            fontWeight: 600,
-            lineHeight: 1.2,
+            fontFamily: "'Cravelo DEMO', sans-serif",
+            fontSize: "clamp(1.1rem, 1.4vw, 1.35rem)",
+            fontWeight: 400,
+            textTransform: "uppercase",
+            letterSpacing: "0.04em",
             color: "#1E1E1E",
             margin: "0 0 16px 0",
+            textAlign: "left",
           }}
         >
           Research & Strategy
         </h3>
         <div
+          className="skills-pills-row"
           style={{
             display: "flex",
             flexWrap: "wrap",
             gap: 10,
+            alignItems: "center",
           }}
         >
           {researchMethods.map((method) => (
-            <MethodChip key={method.name} name={method.name} />
+            <MethodPill key={method.name} name={method.name} />
           ))}
         </div>
       </div>

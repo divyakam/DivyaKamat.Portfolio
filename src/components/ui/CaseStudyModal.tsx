@@ -3,6 +3,7 @@ import { createPortal } from "react-dom";
 import { m, AnimatePresence } from "motion/react";
 import { Calendar, Clock, User, ArrowLeft } from "lucide-react";
 import type { CardItem } from "@/data/types";
+import { useDominantColor } from "@/hooks/useDominantColor";
 
 interface CaseStudyModalProps {
   isOpen: boolean;
@@ -22,6 +23,7 @@ export function CaseStudyModal({ isOpen, onClose, item }: CaseStudyModalProps) {
   const leftPanelRef = useRef<HTMLElement>(null);
   const [mousePos, setMousePos] = useState<{ x: number; y: number } | null>(null);
   const [isHovered, setIsHovered] = useState(false);
+  const dominantColor = useDominantColor(item.cover?.src, item.id, item.dominantColor);
 
   // Lock body scroll when open, handle ESC key & popstate browser back button
   useEffect(() => {
@@ -132,7 +134,7 @@ export function CaseStudyModal({ isOpen, onClose, item }: CaseStudyModalProps) {
                     inset: 0,
                     pointerEvents: "none",
                     zIndex: 0,
-                    background: `radial-gradient(380px circle at ${mousePos.x}px ${mousePos.y}px, rgba(222, 50, 96, 0.08), transparent 80%)`,
+                    background: `radial-gradient(400px circle at ${mousePos.x}px ${mousePos.y}px, rgba(${dominantColor.rgb.join(", ")}, 0.18), transparent 80%)`,
                     transition: "opacity 250ms ease",
                   }}
                 />
@@ -229,14 +231,15 @@ export function CaseStudyModal({ isOpen, onClose, item }: CaseStudyModalProps) {
                           alignItems: "center",
                           height: 26,
                           padding: "0 12px",
-                          background: "var(--accent-tint)",
-                          color: "var(--accent)",
-                          border: "1px solid rgba(222, 50, 96, 0.25)",
+                          background: dominantColor.background,
+                          color: dominantColor.color,
+                          border: dominantColor.border,
                           borderRadius: 9999,
                           fontFamily: "var(--ff-body)",
                           fontSize: 13,
                           fontWeight: 500,
                           letterSpacing: "0.01em",
+                          transition: "background 200ms ease, color 200ms ease, border-color 200ms ease",
                         }}
                       >
                         {cat}
@@ -357,8 +360,8 @@ export function CaseStudyModal({ isOpen, onClose, item }: CaseStudyModalProps) {
                   display: "flex",
                   flexDirection: "column",
                   alignItems: "center",
-                  gap: 24,
-                  padding: 24,
+                  gap: 0,
+                  padding: 0,
                   boxSizing: "border-box",
                 }}
               >
@@ -378,7 +381,7 @@ export function CaseStudyModal({ isOpen, onClose, item }: CaseStudyModalProps) {
                             width: "100%",
                             maxWidth: "100%",
                             height: "auto",
-                            borderRadius: 20,
+                            borderRadius: 0,
                             display: "block",
                           }}
                         />
@@ -394,7 +397,7 @@ export function CaseStudyModal({ isOpen, onClose, item }: CaseStudyModalProps) {
                           width: "100%",
                           maxWidth: "100%",
                           height: "auto",
-                          borderRadius: 20,
+                          borderRadius: 0,
                           display: "block",
                         }}
                       />
@@ -414,7 +417,7 @@ export function CaseStudyModal({ isOpen, onClose, item }: CaseStudyModalProps) {
                         width: "100%",
                         maxWidth: "100%",
                         height: "auto",
-                        borderRadius: 20,
+                        borderRadius: 0,
                         display: "block",
                         objectFit: "contain",
                       }}

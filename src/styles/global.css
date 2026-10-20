@@ -208,6 +208,114 @@ p {
   box-sizing: border-box;
 }
 
+/* ============================================================
+   Landing Page / HomeView Layout & Typography
+   ============================================================ */
+.landing-page-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: calc(100dvh - 64px - clamp(68px, 9vh, 96px) - clamp(16px, 2.5vh, 36px));
+  box-sizing: border-box;
+}
+
+.landing-main-content {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  maxWidth: 100%;
+  min-height: calc(100dvh - 64px - clamp(68px, 9vh, 96px) - clamp(16px, 2.5vh, 36px));
+  gap: clamp(24px, 4vw, 64px);
+  box-sizing: border-box;
+  padding-top: clamp(8px, 1.5vh, 16px);
+  padding-bottom: clamp(8px, 1.5vh, 16px);
+}
+
+.landing-bio {
+  max-width: 28ch;
+  flex-shrink: 0;
+  transform: translateY(clamp(-165px, -23vh, -135px));
+}
+
+.landing-bio-text {
+  font-family: 'Epilogue', sans-serif;
+  font-size: clamp(0.92rem, 1.1vw, 1.18rem);
+  font-weight: 400;
+  line-height: 1.45;
+  color: #1E1E1E;
+  margin: 0;
+  letter-spacing: -0.01em;
+  white-space: pre-line;
+  text-align: left;
+}
+
+.flower-words-container {
+  display: flex;
+  align-items: center;
+  gap: clamp(18px, 2.2vw, 38px);
+  flex-shrink: 0;
+  align-self: flex-end;
+}
+
+.landing-flower-box {
+  width: clamp(160px, 17vw, 300px);
+  height: clamp(160px, 17vw, 300px);
+  transform-origin: center center;
+  flex-shrink: 0;
+}
+
+.landing-flower-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.landing-words-column {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(4px, 0.7vh, 8px);
+}
+
+.landing-intersection-label {
+  display: block;
+  font-family: 'Epilogue', sans-serif;
+  font-size: clamp(1.1rem, 1.4vw, 1.85rem);
+  font-weight: 400;
+  color: #1E1E1E;
+  letter-spacing: 0.01em;
+  margin-bottom: 3px;
+  white-space: nowrap;
+}
+
+.landing-words-stack {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(2px, 0.4vh, 5px);
+}
+
+.landing-word-row {
+  position: relative;
+  overflow: visible;
+  line-height: 0.94;
+}
+
+.landing-word-text {
+  line-height: 0.94;
+  font-size: clamp(2.5rem, 3.8vw, 5.2rem);
+}
+
+.landing-word-text.highlighted {
+  display: inline-flex;
+  color: #1E1E1E;
+}
+
+.landing-word-text.inactive {
+  display: inline-block;
+}
+
 /* Nav flower spin animation on hover/click — exactly 2 spins (720deg) */
 @keyframes navFlowerSpin {
   from {
@@ -328,20 +436,40 @@ p {
     text-align: center !important;
   }
 
-  .app-shell:not(.app-shell-full) .app-main-panel main h1,
-  .app-shell:not(.app-shell-full) .app-main-panel main h2,
-  .app-shell:not(.app-shell-full) .app-main-panel main h3,
+  .app-shell:not(.app-shell-full) .app-main-panel main h1:not(.about-heading-h1),
+  .app-shell:not(.app-shell-full) .app-main-panel main h2:not(.about-quote-h2):not(.skills-heading),
+  .app-shell:not(.app-shell-full) .app-main-panel main h3:not(.project-card-title):not(.skills-subheading),
   .app-shell:not(.app-shell-full) .app-main-panel main h4,
-  .app-shell:not(.app-shell-full) .app-main-panel main p {
+  .app-shell:not(.app-shell-full) .app-main-panel main p:not(.project-card-description):not(.about-bio-p) {
     text-align: center !important;
     margin-left: auto !important;
     margin-right: auto !important;
   }
 
-  /* Flex containers in pages center aligned on mobile */
-  .app-shell:not(.app-shell-full) .app-main-panel main div[style*="display: flex"],
-  .app-shell:not(.app-shell-full) .app-main-panel main div[style*="display:flex"] {
+  /* Flex containers in pages center aligned on mobile (except project card, about, and skills elements) */
+  .app-shell:not(.app-shell-full) .app-main-panel main div[style*="display: flex"]:not(.project-card-body):not(.project-card-meta):not(.about-grid):not(.about-quote-box):not(.skills-pills-row),
+  .app-shell:not(.app-shell-full) .app-main-panel main div[style*="display:flex"]:not(.project-card-body):not(.project-card-meta):not(.about-grid):not(.about-quote-box):not(.skills-pills-row) {
     justify-content: center !important;
+  }
+
+  /* Project card elements must remain left-aligned with proper spacing on all viewports */
+  .project-card-body {
+    text-align: left !important;
+    align-items: stretch !important;
+  }
+
+  .project-card-meta {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    width: 100% !important;
+  }
+
+  .project-card-title,
+  .project-card-description {
+    text-align: left !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
   }
 
   /* Landing page grid on mobile */
@@ -358,6 +486,100 @@ p {
     align-items: center !important;
     text-align: center !important;
     padding-left: 0 !important;
+  }
+
+  /* Responsive Landing Page / HomeView on phone and tablet */
+  .landing-page-wrapper {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    justify-content: flex-start !important;
+    width: 100% !important;
+    min-height: auto !important;
+    padding: clamp(8px, 2vh, 16px) 0 clamp(24px, 4vh, 40px) 0 !important;
+  }
+
+  .landing-main-content {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    justify-content: flex-start !important;
+    width: 100% !important;
+    min-height: auto !important;
+    gap: clamp(28px, 5vh, 44px) !important;
+    padding: 0 !important;
+  }
+
+  /* 1. Bio paragraph: put "p" first, keep it left aligned only, dont centre align it */
+  .landing-bio,
+  .app-shell:not(.app-shell-full) .app-main-panel main div.landing-bio {
+    order: 1 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    transform: none !important;
+    align-self: flex-start !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    justify-content: flex-start !important;
+    text-align: left !important;
+    margin: 0 !important;
+    padding: 0 4px !important;
+  }
+
+  .landing-bio-text,
+  .app-shell:not(.app-shell-full) .app-main-panel main p.landing-bio-text {
+    text-align: left !important;
+    margin-left: 0 !important;
+    margin-right: auto !important;
+    align-self: flex-start !important;
+    font-size: clamp(0.96rem, 3.8vw, 1.15rem) !important;
+    line-height: 1.5 !important;
+    color: #1E1E1E !important;
+  }
+
+  /* 2. Under that put the "flower words container", entire container towards the right */
+  .flower-words-container,
+  .app-shell:not(.app-shell-full) .app-main-panel main div.flower-words-container {
+    order: 2 !important;
+    align-self: flex-end !important;
+    margin-left: auto !important;
+    margin-right: 0 !important;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    gap: clamp(10px, 3vw, 22px) !important;
+    max-width: 100% !important;
+    padding-right: 2px !important;
+  }
+
+  .landing-flower-box {
+    width: clamp(70px, 20vw, 115px) !important;
+    height: clamp(70px, 20vw, 115px) !important;
+    flex-shrink: 0 !important;
+  }
+
+  .landing-words-column {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    text-align: left !important;
+    gap: clamp(2px, 0.5vh, 5px) !important;
+  }
+
+  .landing-intersection-label {
+    font-size: clamp(0.72rem, 2.7vw, 1.05rem) !important;
+    white-space: nowrap !important;
+    text-align: left !important;
+    margin-left: 0 !important;
+    margin-right: auto !important;
+    margin-bottom: 2px !important;
+  }
+
+  .landing-word-text {
+    font-size: clamp(1.75rem, 6.8vw, 3rem) !important;
+    line-height: 0.94 !important;
   }
 
   /* Who am I section on mobile */
@@ -512,6 +734,309 @@ p {
   }
 
   .case-study-back-btn {
-    display: none !important;
+    display: inline-flex !important;
+  }
+}
+
+/* ============================================================
+   About Page Layout & Responsiveness
+   ============================================================ */
+.about-view-container {
+  width: 100%;
+  max-width: 1560px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  padding: 0 clamp(16px, 3vw, 44px) clamp(24px, 4vh, 48px);
+}
+
+.about-heading-h1 {
+  font-family: 'Cravelo DEMO', sans-serif !important;
+  font-size: clamp(2.4rem, 3.8vw, 4.2rem);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #1E1E1E;
+  text-align: left !important;
+  margin: clamp(18px, 3vh, 36px) 0 clamp(40px, 6vh, 68px) 0 !important;
+}
+
+.about-portrait-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+}
+
+.about-name-first,
+.about-name-last {
+  font-family: 'Montecatini Pro', serif;
+  font-size: clamp(3.2rem, 5vw, 5.8rem);
+  font-weight: 600;
+  color: #FF2A7A;
+  letter-spacing: 0.01em;
+  line-height: 0.88;
+}
+
+.about-name-last {
+  padding-left: clamp(36px, 4vw, 72px);
+}
+
+.about-bio-p {
+  font-family: 'Epilogue', sans-serif !important;
+  font-size: clamp(0.92rem, 1.06vw, 1.15rem);
+  font-weight: 400;
+  line-height: 1.46;
+  color: #1E1E1E;
+  margin: 0;
+  text-align: left !important;
+}
+
+.about-flower-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.about-skills-divider {
+  margin-top: clamp(64px, 10vh, 104px);
+  padding-top: clamp(36px, 5vh, 52px);
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+/* Desktop layout for About page */
+@media (min-width: 900px) {
+  .about-grid {
+    display: grid;
+    grid-template-columns: clamp(230px, 20vw, 300px) minmax(340px, 1.4fr) auto;
+    grid-template-rows: auto 1fr;
+    grid-template-areas:
+      "portrait name  quote"
+      "portrait bio   quote";
+    gap: 0 clamp(16px, 2.2vw, 36px);
+    align-items: stretch;
+  }
+
+  .about-hero-image-name {
+    display: contents;
+  }
+
+  .about-portrait-box {
+    grid-area: portrait;
+    position: relative;
+    width: 100%;
+    aspect-ratio: 405 / 487;
+    border-radius: 2px;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    background: #1E1E1E;
+    z-index: 1;
+    flex-shrink: 0;
+  }
+
+  .about-name-box {
+    grid-area: name;
+    display: flex;
+    flex-direction: column;
+    line-height: 0.88;
+    position: relative;
+    z-index: 10;
+    margin-left: clamp(-140px, -11vw, -75px);
+    margin-top: clamp(-32px, -3.8vh, -18px);
+    width: max-content;
+  }
+
+  .about-bio-box {
+    grid-area: bio;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(8px, 1.2vh, 12px);
+    max-width: 680px;
+    align-self: end;
+    margin-top: 24px;
+  }
+
+  .about-quote-box {
+    grid-area: quote;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: clamp(-48px, -4.5vw, -26px);
+    align-self: center;
+    margin-right: 0;
+    padding-right: 0;
+    flex-shrink: 0;
+  }
+
+  .about-quote-h2 {
+    font-family: 'Cravelo DEMO', sans-serif !important;
+    font-size: clamp(1.4rem, 1.9vw, 2.1rem) !important;
+    font-weight: 400 !important;
+    line-height: 1.12 !important;
+    color: #1D17CB !important;
+    margin: 0 !important;
+    letter-spacing: 0.02em !important;
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+    transform: translateY(clamp(-22px, -3vh, -12px)) !important;
+    text-align: left !important;
+  }
+
+  .about-quote-flower {
+    width: clamp(115px, 11vw, 160px);
+    height: clamp(115px, 11vw, 160px);
+    flex-shrink: 0;
+  }
+}
+
+/* Mobile & Tablet layout for About page */
+@media (max-width: 899px) {
+  .about-view-container {
+    padding: 0 16px 40px !important;
+  }
+
+  /* 1. "h1" at the top */
+  .about-heading-h1 {
+    font-size: clamp(1.85rem, 6.8vw, 2.6rem) !important;
+    margin: 14px 0 24px 0 !important;
+    text-align: left !important;
+    margin-left: 0 !important;
+    margin-right: auto !important;
+  }
+
+  .about-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    width: 100% !important;
+    gap: 0 !important;
+  }
+
+  /* 2. Then the image with the name in the same layout */
+  .about-hero-image-name {
+    display: block !important;
+    position: relative !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-bottom: clamp(24px, 4vh, 32px) !important;
+  }
+
+  .about-portrait-box {
+    position: relative !important;
+    width: clamp(180px, 54vw, 235px) !important;
+    aspect-ratio: 405 / 487 !important;
+    border-radius: 2px !important;
+    overflow: hidden !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12) !important;
+    background: #1E1E1E !important;
+    z-index: 1 !important;
+  }
+
+  .about-name-box {
+    position: relative !important;
+    z-index: 5 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    line-height: 0.88 !important;
+    margin-top: clamp(-72px, -20vw, -48px) !important;
+    margin-left: clamp(65px, 20vw, 105px) !important;
+    width: max-content !important;
+    pointer-events: none !important;
+  }
+
+  .about-name-first,
+  .about-name-last {
+    font-size: clamp(2.6rem, 9.6vw, 3.6rem) !important;
+    line-height: 0.88 !important;
+  }
+
+  .about-name-last {
+    padding-left: clamp(20px, 6vw, 36px) !important;
+  }
+
+  /* 3. Followed by paragraphs */
+  .about-bio-box {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 14px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 0 clamp(28px, 4.5vh, 40px) 0 !important;
+    text-align: left !important;
+  }
+
+  .about-bio-p {
+    font-size: clamp(0.94rem, 3.8vw, 1.08rem) !important;
+    line-height: 1.54 !important;
+    text-align: left !important;
+    margin-left: 0 !important;
+    margin-right: auto !important;
+  }
+
+  /* 4. And then the div with the image and "h2" */
+  .about-quote-box {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: clamp(12px, 3.5vw, 20px) !important;
+    margin: 0 0 clamp(32px, 5vh, 48px) 0 !important;
+    width: 100% !important;
+  }
+
+  .about-quote-h2 {
+    font-family: 'Cravelo DEMO', sans-serif !important;
+    font-size: clamp(1.25rem, 4.6vw, 1.7rem) !important;
+    line-height: 1.15 !important;
+    color: #1D17CB !important;
+    margin: 0 !important;
+    letter-spacing: 0.02em !important;
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+    transform: none !important;
+    text-align: left !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+
+  .about-quote-flower {
+    width: clamp(68px, 18vw, 92px) !important;
+    height: clamp(68px, 18vw, 92px) !important;
+    flex-shrink: 0 !important;
+  }
+
+  .about-skills-divider {
+    margin-top: clamp(24px, 3.5vh, 36px) !important;
+    padding-top: clamp(24px, 3.5vh, 36px) !important;
+  }
+
+  /* Skills & Toolkit mobile adjustments */
+  .skills-heading {
+    font-size: clamp(1.8rem, 6.2vw, 2.4rem) !important;
+    text-align: left !important;
+    margin-left: 0 !important;
+    margin-right: auto !important;
+    margin-bottom: 20px !important;
+  }
+
+  .skills-subheading {
+    font-size: clamp(1.05rem, 3.6vw, 1.25rem) !important;
+    text-align: left !important;
+    margin-left: 0 !important;
+    margin-right: auto !important;
+    margin-bottom: 12px !important;
+  }
+
+  .skills-pills-row {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 10px !important;
+    justify-content: flex-start !important;
+    align-items: center !important;
+  }
+
+  .nav-styled-pill {
+    max-width: 100% !important;
   }
 }

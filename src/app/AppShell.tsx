@@ -93,47 +93,128 @@ export function AppShell() {
   useEffect(() => {
     prevPathRef.current = location.pathname;
     setNavigating(false);
+    lastNavTimeRef.current = Date.now();
     if (mainPanelRef.current) {
       mainPanelRef.current.scrollTop = 0;
     }
+    window.scrollTo(0, 0);
   }, [location.pathname]);
 
-  // On home page: detect scroll-down / wheel-down / touch-drag and navigate to /work
+  const isWorkPage = location.pathname === "/work";
+  const lastNavTimeRef = useRef(0);
+
+  // Bidirectional horizontal scroll transition:
+  // - On Home: scrolling forward/down/right or swipe-left navigates to /work
+  // - On Work: scrolling backward/up/left or swipe-right at the top navigates to /
   useEffect(() => {
-    if (!isHomePage) return;
+    if (!isHomePage && !isWorkPage) return;
     const panel = mainPanelRef.current;
 
     let scrollDelta = 0;
     const THRESHOLD = 50; // px of accumulated scroll to trigger navigation
     let resetTimer: ReturnType<typeof setTimeout> | null = null;
 
-    const triggerNavigate = () => {
-      if (!navigating) {
+    const canNavigate = () => {
+      // Cooldown matches the page transition animation
+      return !navigating && Date.now() - lastNavTimeRef.current > 750;
+    };
+
+    const triggerHomeToWork = () => {
+      if (canNavigate()) {
         setNavigating(true);
+        lastNavTimeRef.current = Date.now();
         navigate("/work");
       }
     };
 
-    const handleWheel = (e: WheelEvent) => {
-      if (e.deltaY > 15 && !navigating) {
-        scrollDelta += e.deltaY;
-        if (resetTimer) clearTimeout(resetTimer);
-        resetTimer = setTimeout(() => { scrollDelta = 0; }, 400);
+    const triggerWorkToHome = () => {
+      if (canNavigate()) {
+        setNavigating(true);
+        lastNavTimeRef.current = Date.now();
+        navigate("/");
+      }
+    };
 
-        if (scrollDelta > THRESHOLD) {
-          triggerNavigate();
+    const isAtWorkTop = () => {
+      const panelTop = panel ? panel.scrollTop <= 5 : true;
+      const windowTop = (window.scrollY <= 5) && (document.documentElement.scrollTop <= 5);
+      return panelTop && windowTop;
+    };
+
+    const isAtHomeBottom = () => {
+      const isMobile = window.innerWidth < 1024;
+      if (!isMobile) return true; // on desktop, Home fits within viewport
+      const scrollPos = window.scrollY || document.documentElement.scrollTop || 0;
+      const totalHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
+      return window.innerHeight + scrollPos >= totalHeight - 40;
+    };
+
+    const handleWheel = (e: WheelEvent) => {
+      if (!canNavigate()) return;
+
+      const isHorizontal = Math.abs(e.deltaX) > Math.abs(e.deltaY);
+      const dominantDelta = isHorizontal ? e.deltaX : e.deltaY;
+
+      if (isHomePage) {
+        const shouldTrigger = isHorizontal
+          ? e.deltaX > 15
+          : (e.deltaY > 15 && isAtHomeBottom());
+
+        if (shouldTrigger) {
+          scrollDelta += dominantDelta;
+          if (resetTimer) clearTimeout(resetTimer);
+          resetTimer = setTimeout(() => { scrollDelta = 0; }, 350);
+
+          if (scrollDelta > THRESHOLD) {
+            triggerHomeToWork();
+          }
+        }
+      } else if (isWorkPage) {
+        const shouldTrigger = isHorizontal
+          ? (e.deltaX < -15 && isAtWorkTop())
+          : (e.deltaY < -15 && isAtWorkTop());
+
+        if (shouldTrigger) {
+          scrollDelta += dominantDelta;
+          if (resetTimer) clearTimeout(resetTimer);
+          resetTimer = setTimeout(() => { scrollDelta = 0; }, 350);
+
+          if (scrollDelta < -THRESHOLD) {
+            triggerWorkToHome();
+          }
         }
       }
     };
 
+    let touchStartX = 0;
     let touchStartY = 0;
+
     const handleTouchStart = (e: TouchEvent) => {
+      touchStartX = e.touches[0].clientX;
       touchStartY = e.touches[0].clientY;
     };
+
     const handleTouchMove = (e: TouchEvent) => {
+      if (!canNavigate()) return;
+      const diffX = touchStartX - e.touches[0].clientX;
       const diffY = touchStartY - e.touches[0].clientY;
-      if (diffY > 45 && !navigating) {
-        triggerNavigate();
+      const isHorizontal = Math.abs(diffX) > Math.abs(diffY) * 1.3;
+      const isVertical = Math.abs(diffY) > Math.abs(diffX) * 1.3;
+
+      if (isHomePage) {
+        // Horizontal swipe left or vertical swipe up at end of home
+        if (isHorizontal && diffX > 45) {
+          triggerHomeToWork();
+        } else if (isVertical && diffY > 45 && isAtHomeBottom()) {
+          triggerHomeToWork();
+        }
+      } else if (isWorkPage) {
+        // Horizontal swipe right or vertical pull down at top of work
+        if (isHorizontal && diffX < -45 && isAtWorkTop()) {
+          triggerWorkToHome();
+        } else if (isVertical && diffY < -45 && isAtWorkTop()) {
+          triggerWorkToHome();
+        }
       }
     };
 
@@ -142,17 +223,18 @@ export function AppShell() {
     window.addEventListener("touchmove", handleTouchMove, { passive: true });
 
     let lastScrollTop = panel?.scrollTop ?? 0;
-    const handleScroll = () => {
-      if (!panel) return;
+    const handlePanelScroll = () => {
+      if (!panel || !canNavigate()) return;
       const current = panel.scrollTop;
       const diff = current - lastScrollTop;
       lastScrollTop = current;
-      if (diff > 20 && !navigating) {
-        triggerNavigate();
+
+      if (isHomePage && diff > 20) {
+        triggerHomeToWork();
       }
     };
     if (panel) {
-      panel.addEventListener("scroll", handleScroll, { passive: true });
+      panel.addEventListener("scroll", handlePanelScroll, { passive: true });
     }
 
     return () => {
@@ -160,11 +242,11 @@ export function AppShell() {
       window.removeEventListener("touchstart", handleTouchStart);
       window.removeEventListener("touchmove", handleTouchMove);
       if (panel) {
-        panel.removeEventListener("scroll", handleScroll);
+        panel.removeEventListener("scroll", handlePanelScroll);
       }
       if (resetTimer) clearTimeout(resetTimer);
     };
-  }, [isHomePage, navigate, navigating]);
+  }, [isHomePage, isWorkPage, navigate, navigating]);
 
   return (
     <LazyMotion features={domMax} strict>

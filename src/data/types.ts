@@ -38,4 +38,5 @@ export interface CardItem {
   href?: string; // omit = non-clickable
   external?: boolean;
   order?: number;
+  dominantColor?: string; // Optional custom hex/rgb color for category chips & accents
 }

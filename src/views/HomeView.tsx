@@ -76,138 +76,56 @@ export function HomeView() {
   }, [flowerControls]);
 
   return (
-    <div
-      className="landing-page-wrapper"
-      style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        width: "100%",
-        minHeight: "calc(100dvh - 64px - clamp(68px, 9vh, 96px) - clamp(16px, 2.5vh, 36px))",
-        boxSizing: "border-box",
-      }}
-    >
-      <div
-        className="landing-main-content"
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "flex-start",
-          width: "100%",
-          maxWidth: "100%",
-          minHeight: "calc(100dvh - 64px - clamp(68px, 9vh, 96px) - clamp(16px, 2.5vh, 36px))",
-          gap: "clamp(24px, 4vw, 64px)",
-          boxSizing: "border-box",
-          paddingTop: "clamp(8px, 1.5vh, 16px)",
-          paddingBottom: "clamp(8px, 1.5vh, 16px)",
-        }}
-      >
-        {/* Left Item: Bio paragraph (aligned on the same line as h1 from HeroLeft) */}
+    <div className="landing-page-wrapper">
+      <div className="landing-main-content">
+        {/* Left Item / Bio paragraph: comes FIRST on phone viewport, left-aligned only */}
         <m.div
+          className="landing-bio"
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
-          style={{
-            maxWidth: "28ch",
-            flexShrink: 0,
-            transform: "translateY(clamp(-165px, -23vh, -135px))",
-          }}
         >
-          <p
-            style={{
-              fontFamily: "'Epilogue', sans-serif",
-              fontSize: "clamp(0.92rem, 1.1vw, 1.18rem)",
-              fontWeight: 400,
-              lineHeight: 1.45,
-              color: "#1E1E1E",
-              margin: 0,
-              letterSpacing: "-0.01em",
-              whiteSpace: "pre-line",
-            }}
-          >
+          <p className="landing-bio-text">
             {`I am someone who\nloves thinking in systems,\nsolving problems and\ncreating intuitive experiences.`}
           </p>
         </m.div>
 
-        {/* Right Item: Flower Symbol + Words (aligned to bottom of flex box with little padding) */}
-        <div
-          className="flower-words-container"
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "clamp(18px, 2.2vw, 38px)",
-            flexShrink: 0,
-            alignSelf: "flex-end",
-          }}
-        >
+        {/* Right Item / Flower Symbol + Words: placed under bio, aligned towards the right */}
+        <div className="flower-words-container">
           {/* flower_symbol — rotates 360 in intervals of 4 */}
           <m.div
+            className="landing-flower-box"
             animate={flowerControls}
             initial={{ rotate: 0 }}
-            style={{
-              width: "clamp(160px, 17vw, 300px)",
-              height: "clamp(160px, 17vw, 300px)",
-              transformOrigin: "center center",
-              flexShrink: 0,
-            }}
           >
             <img
               src={flowerSymbol}
               alt="Flower symbol"
-              style={{
-                width: "100%",
-                height: "100%",
-                objectFit: "contain",
-                display: "block",
-              }}
+              className="landing-flower-img"
             />
           </m.div>
 
           {/* Words Column */}
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              gap: "clamp(4px, 0.7vh, 8px)",
-            }}
-          >
+          <div className="landing-words-column">
             {/* Label */}
             <m.span
+              className="landing-intersection-label"
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
-              style={{
-                fontFamily: "'Epilogue', sans-serif",
-                fontSize: "clamp(1.1rem, 1.4vw, 1.85rem)",
-                fontWeight: 400,
-                color: "#1E1E1E",
-                letterSpacing: "0.01em",
-                marginBottom: 3,
-                whiteSpace: "nowrap",
-              }}
             >
               Creating at the intersection of
             </m.span>
 
             {/* Word Stack: ART, DESIGN, RESEARCH, TECHNOLOGY */}
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                gap: "clamp(2px, 0.4vh, 5px)",
-              }}
-            >
+            <div className="landing-words-stack">
               {STACKED_WORDS.map((item) => {
                 const isHighlighted = item.word === activeWord;
 
                 return (
                   <div
                     key={item.word}
-                    style={{
-                      position: "relative",
-                      overflow: "visible",
-                      lineHeight: 0.94,
-                    }}
+                    className="landing-word-row"
                   >
                     {isHighlighted ? (
                       // Highlighted word with smooth text animation
@@ -218,14 +136,11 @@ export function HomeView() {
                           animate={{ opacity: 1, x: 0 }}
                           exit={{ opacity: 0, x: 4 }}
                           transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                          className="landing-word-text highlighted"
                           style={{
-                            display: "inline-flex",
                             fontFamily: item.fontFamily,
-                            fontSize: "clamp(2.5rem, 3.8vw, 5.2rem)",
                             fontWeight: item.fontWeight,
-                            color: "#1E1E1E",
                             letterSpacing: item.letterSpacing,
-                            lineHeight: 0.94,
                           }}
                         >
                           {item.word.split("").map((letter, i) => (
@@ -256,15 +171,13 @@ export function HomeView() {
                     ) : (
                       // Inactive word: clean light silver/grey
                       <m.span
+                        className="landing-word-text inactive"
                         animate={{ color: "#A8A8A8" }}
                         transition={{ duration: 0.45 }}
                         style={{
-                          display: "inline-block",
                           fontFamily: item.fontFamily,
-                          fontSize: "clamp(2.5rem, 3.8vw, 5.2rem)",
                           fontWeight: item.fontWeight,
                           letterSpacing: item.letterSpacing,
-                          lineHeight: 0.94,
                         }}
                       >
                         {item.word}
