@@ -16,10 +16,10 @@ const NotFoundView = lazy(() => import("@/views/NotFoundView").then((m) => ({ de
 const pageVariants: Record<string, any> = {
   initial: (dir: string) => {
     if (dir === "home-to-work") {
-      return { x: "65%", opacity: 0 };
+      return { x: "40%", opacity: 0 };
     }
     if (dir === "work-to-home") {
-      return { x: "-65%", opacity: 0 };
+      return { x: "-40%", opacity: 0 };
     }
     return { opacity: 0, y: 12, x: 0 };
   },
@@ -28,27 +28,27 @@ const pageVariants: Record<string, any> = {
     y: 0,
     opacity: 1,
     transition: {
-      duration: 0.7,
+      duration: 0.5,
       ease: [0.22, 1, 0.36, 1] as const,
     },
   },
   exit: (dir: string) => {
     if (dir === "home-to-work") {
       return {
-        x: "-65%",
+        x: "-30%",
         opacity: 0,
         transition: {
-          duration: 0.7,
+          duration: 0.45,
           ease: [0.22, 1, 0.36, 1] as const,
         },
       };
     }
     if (dir === "work-to-home") {
       return {
-        x: "65%",
+        x: "30%",
         opacity: 0,
         transition: {
-          duration: 0.7,
+          duration: 0.45,
           ease: [0.22, 1, 0.36, 1] as const,
         },
       };
@@ -58,7 +58,7 @@ const pageVariants: Record<string, any> = {
       y: -8,
       x: 0,
       transition: {
-        duration: 0.28,
+        duration: 0.25,
         ease: [0.22, 1, 0.36, 1] as const,
       },
     };
@@ -116,7 +116,7 @@ export function AppShell() {
 
     const canNavigate = () => {
       // Cooldown matches the page transition animation
-      return !navigating && Date.now() - lastNavTimeRef.current > 750;
+      return !navigating && Date.now() - lastNavTimeRef.current > 550;
     };
 
     const triggerHomeToWork = () => {
@@ -261,9 +261,11 @@ export function AppShell() {
           <NavBar />
         </header>
 
-        {/* Left panel (30% on desktop) — hidden on About page */}
+        {/* Left panel (30% on desktop) — hidden on About page and hidden on mobile (< 1024px) */}
         {!isAboutPage && (
-          <HeroLeft className={!isHomePage ? "hide-on-mobile-non-home" : ""} />
+          <div className="desktop-hero-left">
+            <HeroLeft />
+          </div>
         )}
 
         {/* Main content panel (70% on desktop) */}

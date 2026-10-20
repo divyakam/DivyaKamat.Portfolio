@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { m, useAnimation, AnimatePresence } from "motion/react";
 import flowerSymbol from "@/assets/logo/flower_symbol.png";
+import { HeroLeft } from "@/components/hero/HeroLeft";
 
 /**
  * HomeView — Right & Middle panels of landing page (Figma #119:271)
@@ -76,7 +77,13 @@ export function HomeView() {
   }, [flowerControls]);
 
   return (
-    <div className="landing-page-wrapper">
+    <div className="home-view-wrapper">
+      {/* Mobile hero intro: rendered here on phone/tablet viewport so it transitions seamlessly with HomeView */}
+      <div className="mobile-hero-left">
+        <HeroLeft />
+      </div>
+
+      <div className="landing-page-wrapper">
       <div className="landing-main-content">
         {/* Left Item / Bio paragraph: comes FIRST on phone viewport, left-aligned only */}
         <m.div
@@ -191,5 +198,6 @@ export function HomeView() {
         </div>
       </div>
     </div>
+  </div>
   );
 }

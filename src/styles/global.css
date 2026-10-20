@@ -190,6 +190,21 @@ p {
   z-index: 50;
 }
 
+/* ---- HeroLeft container toggle ---- */
+.desktop-hero-left {
+  display: contents;
+}
+
+.mobile-hero-left {
+  display: none;
+}
+
+.home-view-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
 .app-main-panel {
   position: relative;
   overflow-y: auto;
@@ -387,15 +402,24 @@ p {
     bottom: -4px !important;
   }
 
-  /* Hero section intro comes 2nd and is center aligned */
+  .desktop-hero-left {
+    display: none !important;
+  }
+
+  .mobile-hero-left {
+    display: block !important;
+    width: 100% !important;
+  }
+
+  /* Hero section intro inside mobile HomeView */
   aside[aria-label="Introduction"] {
-    order: 2 !important;
     border-right: none !important;
     border-bottom: 1px solid var(--line) !important;
-    padding: 32px 20px !important;
+    padding: clamp(20px, 3vh, 32px) 20px !important;
     height: auto !important;
     text-align: center !important;
     align-items: center !important;
+    width: 100% !important;
   }
 
   aside[aria-label="Introduction"]>div {
@@ -413,14 +437,15 @@ p {
     justify-content: center !important;
   }
 
-  /* Main content panel comes 3rd and is center aligned */
+  /* Main content panel comes 2nd (directly after sticky navbar) */
   .app-main-panel {
-    order: 3 !important;
+    order: 2 !important;
     overflow-y: visible !important;
+    width: 100% !important;
   }
 
   .app-shell:not(.app-shell-full) .app-main-panel main {
-    padding-top: 32px !important;
+    padding-top: 16px !important;
     padding-bottom: 48px !important;
     text-align: center !important;
     display: flex !important;
@@ -440,15 +465,15 @@ p {
   .app-shell:not(.app-shell-full) .app-main-panel main h2:not(.about-quote-h2):not(.skills-heading),
   .app-shell:not(.app-shell-full) .app-main-panel main h3:not(.project-card-title):not(.skills-subheading),
   .app-shell:not(.app-shell-full) .app-main-panel main h4,
-  .app-shell:not(.app-shell-full) .app-main-panel main p:not(.project-card-description):not(.about-bio-p) {
+  .app-shell:not(.app-shell-full) .app-main-panel main p:not(.project-card-description):not(.about-bio-p):not(.landing-bio-text) {
     text-align: center !important;
     margin-left: auto !important;
     margin-right: auto !important;
   }
 
-  /* Flex containers in pages center aligned on mobile (except project card, about, and skills elements) */
-  .app-shell:not(.app-shell-full) .app-main-panel main div[style*="display: flex"]:not(.project-card-body):not(.project-card-meta):not(.about-grid):not(.about-quote-box):not(.skills-pills-row),
-  .app-shell:not(.app-shell-full) .app-main-panel main div[style*="display:flex"]:not(.project-card-body):not(.project-card-meta):not(.about-grid):not(.about-quote-box):not(.skills-pills-row) {
+  /* Flex containers in pages center aligned on mobile (except project card, about, skills, and landing elements) */
+  .app-shell:not(.app-shell-full) .app-main-panel main div[style*="display: flex"]:not(.project-card-body):not(.project-card-meta):not(.about-grid):not(.about-quote-box):not(.skills-pills-row):not(.landing-bio):not(.flower-words-container):not(.landing-words-column),
+  .app-shell:not(.app-shell-full) .app-main-panel main div[style*="display:flex"]:not(.project-card-body):not(.project-card-meta):not(.about-grid):not(.about-quote-box):not(.skills-pills-row):not(.landing-bio):not(.flower-words-container):not(.landing-words-column) {
     justify-content: center !important;
   }
 
@@ -601,9 +626,9 @@ p {
     justify-content: center !important;
   }
 
-  /* Footer comes 4th and is center aligned */
+  /* Footer comes 3rd and is center aligned */
   footer {
-    order: 4 !important;
+    order: 3 !important;
     flex-direction: column !important;
     height: auto !important;
     padding: 20px 20px !important;
